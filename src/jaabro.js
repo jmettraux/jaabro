@@ -23,9 +23,40 @@
 
 var Jaabro = {};
 
+//
+// Jaabro.Input
+
+Jaabro.Input = {};
+
+Jaabro.Input.slice = function(offset, length) {
+
+  if (offset === undefined || offset === null) offset = this.offset;
+  if (length === undefined) return this.string.slice(offset);
+  return this.string.slice(offset, offset + length);
+};
+
+Jaabro.Input.match = function(str_or_rex) {
+
+  if ((typeof str_or_rex) === 'string') {
+    return this.slice(this.offset, str_or_rex.length) === str_or_rex;
+  }
+  return false;
+};
+
+//
+// Jaabro.Result
+
+Jaabro.Result = {};
+
+//
+// Jaabro
+
 Jaabro.str = function(name, input, str) {
 
-  //return 'str';
+  var r = this.makeResult(name, input);
+  r.result = input.match(str) ? 1 : 0;
+
+  return r;
 };
 
 Jaabro.make = function(object) {
@@ -36,9 +67,30 @@ Jaabro.make = function(object) {
   return o;
 };
 
+Jaabro.makeInput = function(string) {
+
+  var i = Object.create(Jaabro.Input);
+  i.string = string;
+  i.offset = 0;
+
+  return i;
+};
+
+Jaabro.makeResult = function(name, input) {
+
+  var r = Object.create(Jaabro.Result);
+  r.name = name;
+  r.result = 0;
+  r.input = input;
+  r.offset = input.offset;
+  r.length = 0;
+
+  return r;
+};
+
 Jaabro.parse = function(string, opts) {
 
-  return this.root({ string: string, offset: 0 });
+  return this.root(this.makeInput(string));
 };
 
 
