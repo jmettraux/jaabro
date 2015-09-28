@@ -48,13 +48,28 @@ Jaabro.Input.match = function(str_or_rex) {
 
 Jaabro.Result = {};
 
+Jaabro.Result.toArray = function(opts) {
+
+  // TODO opts
+
+  var cn = []; for (var i = 0, l = this.children.length; i < l; i++) {
+    cn.push(this.children[i].toArray(opts));
+  }
+
+  return [ this.name, this.result, this.offset, this.length, cn ];
+};
+
 //
 // Jaabro
 
 Jaabro.str = function(name, input, str) {
 
   var r = this.makeResult(name, input);
-  r.result = input.match(str) ? 1 : 0;
+  if (input.match(str)) {
+    r.result = 1;
+    r.length = str.length;
+    input.offset = input.offset + r.length;
+  }
 
   return r;
 };
@@ -84,6 +99,7 @@ Jaabro.makeResult = function(name, input) {
   r.input = input;
   r.offset = input.offset;
   r.length = 0;
+  r.children = [];
 
   return r;
 };

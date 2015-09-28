@@ -12,14 +12,14 @@ describe 'jaabro.js' do
 
   it 'works' do
 
-    p js_exec(%{
+    expect(js(%{
 
       var MyParser = Jaabro.make({
         root: function(input) { return this.str("title", input, "title"); }
       });
 
       return MyParser.parse("title");
-    })
+    }).class).to eq(Hash)
   end
 end
 

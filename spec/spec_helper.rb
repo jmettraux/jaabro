@@ -11,7 +11,7 @@ require 'execjs'
 
 $source = File.read('src/jaabro.js')
 
-def js_exec(s)
+def js(s)
 
   ExecJS.compile($source).exec(s)
 end
