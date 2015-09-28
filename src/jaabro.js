@@ -22,10 +22,18 @@
 //
 
 var Jaabro = {};
+
 Jaabro.str = function(name, input, str) {
-  return 'str';
+
+  //return 'str';
+};
+
+Jaabro.parse = function(string, opts) {
+
+  return this.root({ string: string, offset: 0 });
 };
 
 var MyParser = Object.create(Jaabro);
 MyParser.name = function(input) { return this.str(); };
+MyParser.root = function(input) { return JSON.stringify(input); };
 
