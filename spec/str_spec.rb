@@ -15,6 +15,11 @@ describe 'jaabro.js' do
     it 'flips burgers' do
 
       p js_exec(%{
+
+        var MyParser = Jaabro.make({
+          root: function(input) { return JSON.stringify(input); }
+        });
+
         return MyParser.parse("hello world");
       })
     end
