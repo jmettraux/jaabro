@@ -11,9 +11,8 @@ require 'execjs'
 
 $source = File.read('src/jaabro.js')
 
-def js_eval(code)
+def js_exec(s)
 
-  context = ExecJS.compile($source)
-  context.eval(code)
+  ExecJS.compile($source).exec(s)
 end
 

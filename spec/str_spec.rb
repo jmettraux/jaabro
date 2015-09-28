@@ -14,7 +14,9 @@ describe 'jaabro.js' do
 
     it 'flips burgers' do
 
-      p js_eval('1 + 1')
+      p js_exec(%{
+        return MyParser.name("hello world");
+      })
     end
   end
 end

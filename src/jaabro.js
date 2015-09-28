@@ -21,3 +21,11 @@
 // THE SOFTWARE.
 //
 
+var Jaabro = {};
+Jaabro.str = function(name, input, str) {
+  return 'str';
+};
+
+var MyParser = Object.create(Jaabro);
+MyParser.name = function(input) { return this.str(); };
+
