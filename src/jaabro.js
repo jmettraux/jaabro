@@ -111,15 +111,8 @@ Jaabro.makeResult = function(name, input) {
 
 Jaabro.parse = function(string, opts) {
 
+  // TODO opts
+
   return this.root(this.makeInput(string));
 };
-
-
-//var MyParser = Object.create(Jaabro);
-//MyParser.name = function(input) { return this.str(); };
-//MyParser.root = function(input) { return JSON.stringify(input); };
-  // or
-//var MyParser = Jaabro.make({
-//  root: function(input) { return JSON.stringify(input); }
-//});
 
