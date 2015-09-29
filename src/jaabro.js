@@ -125,9 +125,19 @@ Jaabro.star.quantifier = true;
 Jaabro.plus.jname = 'plus';
 Jaabro.plus.quantifier = true;
 
-Jaabro._quantify = function(parser) {
+Jaabro.toQuantifier = function(parser) {
 
-  return parser && parser.quantifier ? parser() : false;
+  if (parser === '?') return this.qmark;
+  if (parser === '*') return this.star;
+  if (parser === '+') return this.plus;
+  if (parser && parser.quantifier) return parser;
+  return null;
+};
+
+Jaabro.quantify = function(parser) {
+
+  var q = this.toQuantifier(parser);
+  return q ? q() : false;
 };
 
 Jaabro.seq = function(name, input, parsers_) {
@@ -143,9 +153,9 @@ Jaabro.seq = function(name, input, parsers_) {
   while (true) {
 
     var p = ps.shift(); if ( ! p) break;
-    if (p.quantifier === true) throw new Error('lonely quantifier ' + p.jname);
+    if (this.toQuantifier(p)) throw new Error('lonely quantifier ' + p.jname);
 
-    var q = this._quantify(ps[0]);
+    var q = this.quantify(ps[0]);
 
     if (q) {
       ps.shift();
