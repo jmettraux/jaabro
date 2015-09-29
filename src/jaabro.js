@@ -51,6 +51,14 @@ Jaabro.Input.match = function(str_or_rex) {
 
 Jaabro.Result = {};
 
+Jaabro.Result.prune = function() {
+
+  var cn = []; this.children.forEach(function(c) {
+    if (c.result === 1) cn.push(c);
+  });
+  this.children = cn;
+};
+
 Jaabro.Result.toArray = function(opts) {
 
   var cn = null;
@@ -146,6 +154,64 @@ Jaabro.seq = function(name, input, parsers_) {
   return r;
 };
 
+//    def rep(name, input, parser, min, max=0)
+//
+//      min = 0 if min == nil || min < 0
+//      max = nil if max.nil? || max < 1
+//
+//      r = ::Raabro::Tree.new(name, :rep, input)
+//      start = input.offset
+//      count = 0
+//
+//      loop do
+//        c = _parse(parser, input)
+//        r.children << c
+//        break if c.result != 1
+//        count += 1
+//        break if max && count == max
+//      end
+//
+//      if count >= min && (max == nil || count <= max)
+//        r.result = 1
+//        r.length = input.offset - start
+//      else
+//        input.offset = start
+//      end
+//
+//      r.prune! if input.options[:prune]
+//
+//      r
+//    end
+Jaabro.rep = function(name, input, parser, min, max) {
+
+  if (min === null || min === undefined || min < 0) min = 0;
+  if (max === null || max === undefined || max < 0) max = 0;
+
+  var o = input.offset;
+  var r = this.makeResult(name, input, 'rep');
+  var count = 0;
+
+  while (true) {
+    var cr = parser(input);
+    r.children.push(cr);
+    if (cr.result !== 1) break;
+    count = count + 1;
+    if (max > 0 && count === max) break;
+  }
+
+  if (count >= min && (max < 1 || count <= max)) {
+    r.result = 1;
+    r.length = input.offset - o;
+  }
+  else {
+    input.offset = o;
+  }
+
+  if (input.options.prune) r.prune();
+
+  return r;
+};
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);
@@ -155,11 +221,12 @@ Jaabro.make = function(object) {
 };
 Jaabro.makeParser = Jaabro.make;
 
-Jaabro.makeInput = function(string) {
+Jaabro.makeInput = function(string, opts) {
 
   var i = Object.create(Jaabro.Input);
   i.string = string;
   i.offset = 0;
+  i.options = opts || {};
 
   return i;
 };
