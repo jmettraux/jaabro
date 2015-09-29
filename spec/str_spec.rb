@@ -15,20 +15,28 @@ describe 'jaabro.js' do
     it 'misses' do
 
       expect(js(%{
+
         var i = Jaabro.makeInput('hello');
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+
+        return [
+          Jaabro.str('n0', i, 'world').toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 0, 0, 0, [] ], 0 ]
+        [ [ 'n0', 0, 0, 0, 'str', [] ], 0 ]
       )
     end
 
     it 'hits' do
 
       expect(js(%{
+
         var i = Jaabro.makeInput('world');
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+
+        return [
+          Jaabro.str('n0', i, 'world').toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 1, 0, 5, [] ], 5 ]
+        [ [ 'n0', 1, 0, 5, 'str', 'world' ], 5 ]
       )
     end
 
@@ -39,9 +47,11 @@ describe 'jaabro.js' do
         var i = Jaabro.makeInput('hello');
         i.offset = 5;
 
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+        return [
+          Jaabro.str('n0', i, 'world').toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 0, 5, 0, [] ], 5 ]
+        [ [ 'n0', 0, 5, 0, 'str', [] ], 5 ]
       )
     end
   end

@@ -18,9 +18,11 @@ describe 'jaabro.js' do
 
         var i = Jaabro.makeInput('hello');
 
-        return [ Jaabro.rex('n0', i, /lo/).toArray(), i.offset ];
+        return [
+          Jaabro.rex('n0', i, /lo/).toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 0, 0, 0, [] ], 0 ]
+        [ [ 'n0', 0, 0, 0, 'rex', [] ], 0 ]
       )
     end
 
@@ -30,9 +32,11 @@ describe 'jaabro.js' do
 
         var i = Jaabro.makeInput('world');
 
-        return [ Jaabro.rex('n0', i, /worl?d/).toArray(), i.offset ];
+        return [
+          Jaabro.rex('n0', i, /worl?d/).toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 1, 0, 5, [] ], 5 ]
+        [ [ 'n0', 1, 0, 5, 'rex', 'world' ], 5 ]
       )
     end
 
@@ -43,9 +47,11 @@ describe 'jaabro.js' do
         var i = Jaabro.makeInput('hello');
         i.offset = 5;
 
-        return [ Jaabro.rex('n0', i, /hello/).toArray(), i.offset ];
+        return [
+          Jaabro.rex('n0', i, /hello/).toArray({ leaves: true }),
+          i.offset ];
       })).to eq(
-        [ [ 'n0', 0, 5, 0, [] ], 5 ]
+        [ [ 'n0', 0, 5, 0, 'rex', [] ], 5 ]
       )
     end
   end

@@ -53,13 +53,20 @@ Jaabro.Result = {};
 
 Jaabro.Result.toArray = function(opts) {
 
-  // TODO opts
+  var cn = null;
 
-  var cn = []; for (var i = 0, l = this.children.length; i < l; i++) {
-    cn.push(this.children[i].toArray(opts));
+  if (this.result === 1 && this.children.length === 0)
+  {
+    cn = this.input.slice(this.offset, this.length);
+  }
+  else {
+    cn = []; for (var i = 0, l = this.children.length; i < l; i++) {
+      cn.push(this.children[i].toArray(opts));
+    }
   }
 
-  return [ this.name, this.result, this.offset, this.length, cn ];
+  return [
+    this.name, this.result, this.offset, this.length, this.parter, cn ];
 };
 
 //
@@ -67,7 +74,9 @@ Jaabro.Result.toArray = function(opts) {
 
 Jaabro.str = function(name, input, str) {
 
-  var r = this.makeResult(name, input);
+  var r =
+    this.makeResult(name, input, (typeof str) === 'string' ? 'str' : 'rex');
+
   var l = input.match(str);
   if (l > -1) {
     r.result = 1;
@@ -96,7 +105,7 @@ Jaabro.makeInput = function(string) {
   return i;
 };
 
-Jaabro.makeResult = function(name, input) {
+Jaabro.makeResult = function(name, input, parter) {
 
   var r = Object.create(Jaabro.Result);
   r.name = name;
@@ -104,6 +113,7 @@ Jaabro.makeResult = function(name, input) {
   r.input = input;
   r.offset = input.offset;
   r.length = 0;
+  r.parter = parter;
   r.children = [];
 
   return r;
