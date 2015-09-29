@@ -334,6 +334,17 @@ Jaabro.make = function(object) {
 };
 Jaabro.makeParser = Jaabro.make;
 
+Jaabro.make2 = function(fun) {
+
+  var p = Object.create(Jaabro);
+
+  //var r = fun(p);
+  var r = fun.call(this, p);
+  p.root = r;
+
+  return p;
+};
+
 Jaabro.makeInput = function(string, opts) {
 
   var i = Object.create(Jaabro.Input);
