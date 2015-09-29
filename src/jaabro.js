@@ -38,9 +38,12 @@ Jaabro.Input.slice = function(offset, length) {
 Jaabro.Input.match = function(str_or_rex) {
 
   if ((typeof str_or_rex) === 'string') {
-    return this.slice(this.offset, str_or_rex.length) === str_or_rex;
+    var l = str_or_rex.length;
+    return this.slice(this.offset, l) === str_or_rex ? l : -1;
   }
-  return false;
+
+  var m = this.slice(this.offset).match(str_or_rex);
+  return m !== null && m.index == 0 ? m[0].length : -1;
 };
 
 //
@@ -65,14 +68,16 @@ Jaabro.Result.toArray = function(opts) {
 Jaabro.str = function(name, input, str) {
 
   var r = this.makeResult(name, input);
-  if (input.match(str)) {
+  var l = input.match(str);
+  if (l > -1) {
     r.result = 1;
-    r.length = str.length;
-    input.offset = input.offset + r.length;
+    r.length = l;
+    input.offset = input.offset + l;
   }
 
   return r;
 };
+Jaabro.rex = Jaabro.str;
 
 Jaabro.make = function(object) {
 

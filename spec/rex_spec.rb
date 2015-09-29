@@ -2,7 +2,7 @@
 #
 # specifying jaabro
 #
-# Mon Sep 28 21:08:18 JST 2015
+# Tue Sep 29 11:12:13 JST 2015
 #
 
 require 'spec_helper'
@@ -10,13 +10,15 @@ require 'spec_helper'
 
 describe 'jaabro.js' do
 
-  describe 'str' do
+  describe 'rex' do
 
     it 'misses' do
 
       expect(js(%{
+
         var i = Jaabro.makeInput('hello');
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+
+        return [ Jaabro.rex('n0', i, /lo/).toArray(), i.offset ];
       })).to eq(
         [ [ 'n0', 0, 0, 0, [] ], 0 ]
       )
@@ -25,8 +27,10 @@ describe 'jaabro.js' do
     it 'hits' do
 
       expect(js(%{
+
         var i = Jaabro.makeInput('world');
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+
+        return [ Jaabro.rex('n0', i, /worl?d/).toArray(), i.offset ];
       })).to eq(
         [ [ 'n0', 1, 0, 5, [] ], 5 ]
       )
@@ -39,7 +43,7 @@ describe 'jaabro.js' do
         var i = Jaabro.makeInput('hello');
         i.offset = 5;
 
-        return [ Jaabro.str('n0', i, 'world').toArray(), i.offset ];
+        return [ Jaabro.rex('n0', i, /hello/).toArray(), i.offset ];
       })).to eq(
         [ [ 'n0', 0, 5, 0, [] ], 5 ]
       )
