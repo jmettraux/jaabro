@@ -59,6 +59,11 @@ describe 'jaabro.js' do
     describe 'a lonely quantifier' do
 
       it 'throws an error'
+      #  js(%{
+      #    var i = Jaabro.makeInput('something');
+      #    return Jaabro.seq('n0', i, Jaabro.qmark);
+      #  })
+      #end
     end
 
     describe 'the question mark quantifier' do

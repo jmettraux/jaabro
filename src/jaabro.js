@@ -107,14 +107,30 @@ Jaabro.alt = function(name, input, parsers_) {
   return r;
 };
 
+Jaabro.qmark = function() { return [ 0, 1 ]; };
+Jaabro.star = function() { return [ 0, 0 ]; };
+Jaabro.plus = function() { return [ 1, 0 ]; };
+
+Jaabro._quantify = function(parser) {
+
+  if (parser === this.qmark) return parser();
+  if (parser === this.star) return parser();
+  if (parser === this.plus) return parser();
+  return false;
+};
+
 Jaabro.seq = function(name, input, parsers_) {
 
   var o = input.offset;
   var r = this.makeResult(name, input, 'seq');
   var cr = null;
 
-  for (var i = 2, l = arguments.length; i < l; i++) {
-    cr = arguments[i](input);
+  var ps = []; for (var i = 2, l = arguments.length; i < l; i++) {
+    ps.push(arguments[i]);
+  }
+  while (true) {
+    var p = ps.shift(); if ( ! p) break;
+    cr = p(input);
     r.children.push(cr);
     if (cr.result !== 1) break;
   }
