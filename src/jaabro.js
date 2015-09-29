@@ -154,34 +154,6 @@ Jaabro.seq = function(name, input, parsers_) {
   return r;
 };
 
-//    def rep(name, input, parser, min, max=0)
-//
-//      min = 0 if min == nil || min < 0
-//      max = nil if max.nil? || max < 1
-//
-//      r = ::Raabro::Tree.new(name, :rep, input)
-//      start = input.offset
-//      count = 0
-//
-//      loop do
-//        c = _parse(parser, input)
-//        r.children << c
-//        break if c.result != 1
-//        count += 1
-//        break if max && count == max
-//      end
-//
-//      if count >= min && (max == nil || count <= max)
-//        r.result = 1
-//        r.length = input.offset - start
-//      else
-//        input.offset = start
-//      end
-//
-//      r.prune! if input.options[:prune]
-//
-//      r
-//    end
 Jaabro.rep = function(name, input, parser, min, max) {
 
   if (min === null || min === undefined || min < 0) min = 0;
@@ -247,8 +219,6 @@ Jaabro.makeResult = function(name, input, parter) {
 
 Jaabro.parse = function(string, opts) {
 
-  // TODO opts
-
-  return this.root(this.makeInput(string));
+  return this.root(this.makeInput(string, opts));
 };
 
