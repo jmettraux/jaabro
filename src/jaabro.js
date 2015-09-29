@@ -88,6 +88,25 @@ Jaabro.str = function(name, input, str) {
 };
 Jaabro.rex = Jaabro.str;
 
+Jaabro.alt = function(name, input, parsers_) {
+
+  var r = this.makeResult(name, input, 'alt');
+  var cr = null;
+
+  for (var i = 2, l = arguments.length; i < l; i++) {
+    cr = arguments[i](input);
+    r.children.push(cr);
+    if (cr.result === 1) break;
+  }
+
+  if (cr && cr.result == 1) {
+    r.result = 1;
+    r.length = cr.length;
+  }
+
+  return r;
+};
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);
@@ -95,6 +114,7 @@ Jaabro.make = function(object) {
 
   return o;
 };
+Jaabro.makeParser = Jaabro.make;
 
 Jaabro.makeInput = function(string) {
 

@@ -40,6 +40,20 @@ describe 'jaabro.js' do
       )
     end
 
+    it 'hits just enough' do
+
+      expect(js(%{
+
+        var i = Jaabro.makeInput('world');
+
+        return [
+          Jaabro.str('n0', i, 'wo').toArray({ leaves: true }),
+          i.offset ];
+      })).to eq(
+        [ [ 'n0', 1, 0, 2, 'str', 'wo' ], 2 ]
+      )
+    end
+
     it 'misses on an empty input' do
 
       expect(js(%{

@@ -9,7 +9,13 @@ require 'pp'
 require 'execjs'
 
 
-$source = File.read('src/jaabro.js')
+$source =
+  File.read('src/jaabro.js') +
+  %{
+    var ta = function(i) { return Jaabro.str(null, i, 'ta'); };
+    var to = function(i) { return Jaabro.str(null, i, 'to'); };
+    var tu = function(i) { return Jaabro.str(null, i, 'tu'); };
+  }
 
 def js(s)
 
