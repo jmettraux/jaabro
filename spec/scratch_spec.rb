@@ -14,12 +14,34 @@ describe 'jaabro.js' do
 
     expect(js(%{
 
-      var MyParser = Jaabro.make({
-        root: function(input) { return this.str("title", input, "title"); }
-      });
+      //var MyParser = Jaabro.make({
+      //  root: function(input) { return this.str("title", input, "title"); }
+      //});
+      //return MyParser.parse("title");
 
-      return MyParser.parse("title");
-    }).class).to eq(Hash)
+      var Car = {};
+      Car.getKm = function() { return 1000; };
+
+      var makeCar = function(f) {
+
+        var c = Object.create(Car);
+
+        if (f) {
+          //var r = f.call({});
+          var r = f();
+          for (var k in r) c[k] = r[k];
+        }
+
+        return c;
+      };
+
+      var c = makeCar(function() {
+        var make = "Mazda";
+        this.getMake = function() { return make + this.getKm(); };
+        return this;
+      });
+      return [ c.getKm(), c.getMake() ];
+    })).to eq(:x)
   end
 end
 
