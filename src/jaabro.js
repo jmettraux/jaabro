@@ -107,6 +107,29 @@ Jaabro.alt = function(name, input, parsers_) {
   return r;
 };
 
+Jaabro.seq = function(name, input, parsers_) {
+
+  var o = input.offset;
+  var r = this.makeResult(name, input, 'seq');
+  var cr = null;
+
+  for (var i = 2, l = arguments.length; i < l; i++) {
+    cr = arguments[i](input);
+    r.children.push(cr);
+    if (cr.result !== 1) break;
+  }
+
+  if (cr.result === 1) {
+    r.result = 1;
+    r.length = input.offset - o;
+  }
+  else {
+    input.offset = o;
+  }
+
+  return r;
+};
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);
