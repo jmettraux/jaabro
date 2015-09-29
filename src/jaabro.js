@@ -219,6 +219,21 @@ Jaabro.ren = function(name, input, parser) {
   return cr;
 };
 
+Jaabro.all = function(name, input, parser) {
+
+  var o = input.offset;
+  var l = input.string.length - o;
+  var r = this.makeResult(name, input, 'all');
+
+  var cr = parser(input);
+  r.children.push(cr);
+
+  if (cr.length < l) { input.offset = o; }
+  else { r.result = 1; r.length = l; }
+
+  return r;
+};
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);

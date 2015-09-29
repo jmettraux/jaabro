@@ -17,6 +17,7 @@ $source =
     var tu = function(i) { return Jaabro.str(null, i, 'tu'); };
 
     var nta = function(i) { return Jaabro.str('ta', i, 'ta'); };
+    var to_plus = function(i) { return Jaabro.rep('tos', i, to, 1); };
   }
 
 def js(s)
