@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 
-var Jaabro = {};
+var Jaabro = { VERSION: '1.0.0' };
 
 //
 // Jaabro.Input
