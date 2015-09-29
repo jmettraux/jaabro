@@ -98,21 +98,56 @@ Jaabro.rex = Jaabro.str;
 
 Jaabro.alt = function(name, input, parsers_) {
 
-  var r = this.makeResult(name, input, 'alt');
+  var ps = [];
+  for (var i = 2, l = arguments.length; i < l; i++) ps.push(arguments[i]);
+
+  // greedy ?
+  var l = ps[ps.length - 1];
+  var g = false; if (l === true || l === false) { ps.pop(); g = l; }
+
+  var o = input.offset;
+  var r = this.makeResult(name, input, g ? 'altg' : 'alt');
   var cr = null;
 
-  for (var i = 2, l = arguments.length; i < l; i++) {
-    cr = arguments[i](input);
-    r.children.push(cr);
-    if (cr.result === 1) break;
-  }
+  while (true) {
 
-  if (cr && cr.result == 1) {
+    var p = ps.shift(); if ( ! p) break;
+
+    var rr = p(input);
+    r.children.push(rr);
+
+    input.offset = o;
+
+    if (g) {
+      if (rr.result === 1 && rr.length > (cr ? cr.length : -1)) {
+        if (cr) cr.result = 0;
+        cr = rr;
+      }
+    }
+    else {
+      cr = rr;
+      if (rr.result === 1) break;
+    }
+  };
+
+  if (cr && cr.result === 1) {
     r.result = 1;
     r.length = cr.length;
+    input.offset = o + r.length;
   }
 
+  if (input.options.prune) r.prune();
+
   return r;
+};
+
+Jaabro.altg = function(name, input, parsers_) {
+
+  var as = [];
+  for (var i = 0, l = arguments.length; i < l; i++) as.push(arguments[i]);
+  as.push(true);
+
+  return this.alt.apply(this, as);
 };
 
 Jaabro.qmark = function() { return [ 0, 1 ]; };

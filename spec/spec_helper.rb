@@ -12,6 +12,9 @@ require 'execjs'
 $source =
   File.read('src/jaabro.js') +
   %{
+
+    // various parsers used for testing
+
     var ta = function(i) { return Jaabro.str(null, i, 'ta'); };
     var to = function(i) { return Jaabro.str(null, i, 'to'); };
     var tu = function(i) { return Jaabro.str(null, i, 'tu'); };
@@ -24,6 +27,9 @@ $source =
 
     var lt = function(i) { return Jaabro.str(null, i, '<'); };
     var gt = function(i) { return Jaabro.str(null, i, '>'); };
+
+    var onex = function(i) { return Jaabro.str('onex', i, 'x'); };
+    var twox = function(i) { return Jaabro.str('twox', i, 'xx'); };
   }
 
 def js(s)

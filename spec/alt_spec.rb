@@ -17,11 +17,9 @@ describe 'jaabro.js' do
       expect(js(%{
 
         var i = Jaabro.makeInput('tutu');
+        var r = Jaabro.alt('n0', i, ta, to);
 
-        return [
-          Jaabro.alt('n0', i, ta, to).toArray({ leaves: true }),
-          i.offset
-        ];
+        return [ r.toArray({ leaves: true }), i.offset ];
       })).to eq(
         [
           [ 'n0', 0, 0, 0, 'alt', [
@@ -38,11 +36,9 @@ describe 'jaabro.js' do
       expect(js(%{
 
         var i = Jaabro.makeInput('tato');
+        var r = Jaabro.alt('n0', i, ta, to);
 
-        return [
-          Jaabro.alt('n0', i, ta, to).toArray({ leaves: true }),
-          i.offset
-        ];
+        return [ r.toArray({ leaves: true }), i.offset ];
       })).to eq(
         [
           [ 'n0', 1, 0, 2, 'alt', [
@@ -58,16 +54,54 @@ describe 'jaabro.js' do
       expect(js(%{
 
         var i = Jaabro.makeInput('tato');
+        var r = Jaabro.alt('n0', i, to, ta);
 
-        return [
-          Jaabro.alt('n0', i, to, ta).toArray({ leaves: true }),
-          i.offset
-        ];
+        return [ r.toArray({ leaves: true }), i.offset ];
       })).to eq(
         [
           [ 'n0', 1, 0, 2, 'alt', [
             [ nil, 0, 0, 0, 'str', [] ],
             [ nil, 1, 0, 2, 'str', 'ta' ]
+          ] ],
+          2
+        ]
+      )
+    end
+  end
+
+  describe 'altg' do
+
+    it 'is greedy' do
+
+      expect(js(%{
+
+        var i = Jaabro.makeInput('xx');
+        var r = Jaabro.altg('g', i, onex, twox);
+
+        return [ r.toArray({ leaves: true }), i.offset ];
+      })).to eq(
+        [
+          [ 'g', 1, 0, 2, 'altg', [
+            [ 'onex', 0, 0, 1, 'str', [] ],
+            [ 'twox', 1, 0, 2, 'str', 'xx' ]
+          ] ],
+          2
+        ]
+      )
+    end
+
+    it 'prunes' do
+
+      expect(js(%{
+
+        var i = Jaabro.makeInput('xx', { prune: true });
+        var r = Jaabro.altg('g', i, onex, twox);
+
+        return [ r.toArray({ leaves: true }), i.offset ];
+      })).to eq(
+        [
+          [ 'g', 1, 0, 2, 'altg', [
+            [ 'twox', 1, 0, 2, 'str', 'xx' ]
           ] ],
           2
         ]
