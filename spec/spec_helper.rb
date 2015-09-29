@@ -18,6 +18,9 @@ $source =
 
     var nta = function(i) { return Jaabro.str('ta', i, 'ta'); };
     var to_plus = function(i) { return Jaabro.rep('tos', i, to, 1); };
+
+    var cha = function(i) { return Jaabro.rex(null, i, /[a-z]/); };
+    var com = function(i) { return Jaabro.str(null, i, ','); };
   }
 
 def js(s)

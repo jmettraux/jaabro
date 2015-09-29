@@ -234,6 +234,62 @@ Jaabro.all = function(name, input, parser) {
   return r;
 };
 
+Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
+
+  var j = false; // jseq?
+
+  if (sepp === undefined && endp === undefined) {
+    j = true;
+    sepp = eltp; eltp = startp; startp = null;
+  }
+
+  var o = input.offset;
+  var r = this.makeResult(name, input, j ? 'jseq' : 'eseq');
+  r.result = 1;
+  var cr = null;
+
+  if (startp) {
+    cr = starp(input);
+    r.children.push(cr);
+    if (cr.result !== 1) r.result = 0;
+  }
+
+  if (r.result === 1) {
+
+    var i = 1;
+    var count = 0;
+
+    while (true) {
+
+      i = (i + 1) % 2;
+      var p = i == 0 ? eltp : sepp;
+
+      cr = p(input);
+      r.children.push(cr);
+
+      if (cr.result !== 1) break;
+
+      count = count + 1;
+    }
+
+    if (j && count < 1) r.result = 0;
+  }
+
+  if (r.result === 1 && endp) {
+    cr = endp(input);
+    r.children.push(cr);
+    if (c.result !== 1) r.result = 0;
+  }
+
+  if (r.result == 1) r.length = input.offset - o;
+  else input.offset = o;
+
+  if (input.options.prune) r.prune();
+
+  return r;
+};
+Jaabro.jseq = Jaabro.eseq;
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);
