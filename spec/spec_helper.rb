@@ -15,6 +15,8 @@ $source =
     var ta = function(i) { return Jaabro.str(null, i, 'ta'); };
     var to = function(i) { return Jaabro.str(null, i, 'to'); };
     var tu = function(i) { return Jaabro.str(null, i, 'tu'); };
+
+    var nta = function(i) { return Jaabro.str('ta', i, 'ta'); };
   }
 
 def js(s)

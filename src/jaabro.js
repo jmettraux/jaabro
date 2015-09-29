@@ -211,6 +211,14 @@ Jaabro.rep = function(name, input, parser, min, max) {
   return r;
 };
 
+Jaabro.ren = function(name, input, parser) {
+
+  var cr = parser(input);
+  cr.name = name;
+
+  return cr;
+};
+
 Jaabro.make = function(object) {
 
   var o = Object.create(Jaabro);
