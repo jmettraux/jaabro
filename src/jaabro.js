@@ -249,7 +249,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
   var cr = null;
 
   if (startp) {
-    cr = starp(input);
+    cr = startp(input);
     r.children.push(cr);
     if (cr.result !== 1) r.result = 0;
   }
@@ -278,7 +278,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
   if (r.result === 1 && endp) {
     cr = endp(input);
     r.children.push(cr);
-    if (c.result !== 1) r.result = 0;
+    if (cr.result !== 1) r.result = 0;
   }
 
   if (r.result == 1) r.length = input.offset - o;

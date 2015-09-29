@@ -21,6 +21,9 @@ $source =
 
     var cha = function(i) { return Jaabro.rex(null, i, /[a-z]/); };
     var com = function(i) { return Jaabro.str(null, i, ','); };
+
+    var lt = function(i) { return Jaabro.str(null, i, '<'); };
+    var gt = function(i) { return Jaabro.str(null, i, '>'); };
   }
 
 def js(s)
