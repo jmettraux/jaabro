@@ -46,7 +46,7 @@ describe 'jaabro.js' do
         function rewrite_xxx(t) { return 'y'; }
       });
       //return MyParser.rewrite({ name: 'xxx' });
-      return MyParser.parse('hello').toArray();
+      return MyParser.parse('hello', { debug: 3 }).toArray();
     })).to eq(
       [ 'hw', 0, 0, 0, 'seq', [
         [ 'h', 1, 0, 5, 'rex', 'hello' ],

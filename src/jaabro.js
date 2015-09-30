@@ -401,8 +401,22 @@ Jaabro.makeResult = function(name, input, parter) {
 Jaabro.parse = function(string, opts) {
 
   opts = opts || {};
+
+  d = parseInt(opts.debug, 10) || 0
+  if (d > 0) opts.rewrite = false;
+  if (d > 1) opts.all = false;
+  if (d > 2) opts.prune = false;
+
   if ( ! opts.hasOwnProperty('prune')) opts.prune = true;
 
-  return this.root(this.makeInput(string, opts));
+  var t = null;
+  if (opts.all === false) t = this.root(this.makeInput(string, opts));
+  else t = Jaabro.all(null, this.makeInput(string, opts), this.root);
+
+  if (opts.prune != false && t.result !== 1) return null;
+
+  if (t.parter === 'all') t = t.children[0];
+
+  return t;
 };
 
