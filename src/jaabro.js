@@ -338,7 +338,23 @@ Jaabro.make2 = function(fun) {
 
   var p = Object.create(Jaabro);
 
-  var rw = fun(p);
+  var funs = fun.toString();
+  [
+    'all', 'alt', 'altg', 'eseq', 'jseq', 'ren', 'rep', 'rex', 'seq', 'str'
+  ].forEach(function(f) {
+    funs = funs.replace(
+      new RegExp(" +" + f + "\\(", 'g'),
+      ' Jaabro.' + f + '(');
+  });
+  funs =
+    funs.slice(0, funs.lastIndexOf('}')) +
+    'function rewrite(t) { return eval("rewrite_" + t.name)(t); };' +
+    'return [ root, rewrite ];' +
+    '}';
+  //print(">>>" + funs + "<<<");
+  eval('fun = ' + funs);
+
+  var rw = fun();
   p.root = rw[0];
   p.rewrite = rw[1];
 
