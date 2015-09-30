@@ -400,6 +400,9 @@ Jaabro.makeResult = function(name, input, parter) {
 
 Jaabro.parse = function(string, opts) {
 
+  opts = opts || {};
+  if ( ! opts.hasOwnProperty('prune')) opts.prune = true;
+
   return this.root(this.makeInput(string, opts));
 };
 
