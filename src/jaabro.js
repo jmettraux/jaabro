@@ -77,6 +77,26 @@ Jaabro.Result.toArray = function(opts) {
     this.name, this.result, this.offset, this.length, this.parter, cn ];
 };
 
+Jaabro.Result.toString = function() {
+
+  var depth = arguments[0] || 0;
+  var string = arguments[1] || [];
+
+  if (depth > 0) string.push('\n');
+  for (var i = 0; i < depth; i++) string.push('  ');
+
+  string.push(this.result, ' ', JSON.stringify(this.name), ' ');
+  string.push(this.offset, ',', this.length);
+
+  if (this.result === 1 && this.children.length === 0) {
+    string.push(' ', JSON.stringify(this.input.slice(this.offset, this.length)));
+  }
+
+  this.children.forEach(function(c) { c.toString(depth + 1, string); });
+
+  return depth == 0 ? string.join('') : null;
+};
+
 //
 // Jaabro
 

@@ -56,10 +56,20 @@ describe 'jaabro.js' do
       it 'works (rewrite: false)' do
 
         expect(js(XEL + %{
-          return Xel.parse('MUL(7,-3)', { rewrite: false }).toArray();
-        })).to eq(
-          :x
-        )
+          return Xel.parse('MUL(7,-3)', { rewrite: false }).toString();
+        })).to eq(%{
+1 "exp" 0,9
+  1 "fun" 0,9
+    1 "funame" 0,3 "MUL"
+    1 "args" 3,6
+      1 null 3,1 "("
+      1 "exp" 4,1
+        1 "num" 4,1 "7"
+      1 null 5,1 ","
+      1 "exp" 6,2
+        1 "num" 6,2 "-3"
+      1 null 8,1 ")"
+        }.strip)
       end
     end
   end
