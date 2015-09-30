@@ -338,9 +338,9 @@ Jaabro.make2 = function(fun) {
 
   var p = Object.create(Jaabro);
 
-  //var r = fun(p);
-  var r = fun.call(this, p);
-  p.root = r;
+  var rw = fun(p);
+  p.root = rw[0];
+  p.rewrite = rw[1];
 
   return p;
 };

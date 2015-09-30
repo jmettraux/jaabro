@@ -38,12 +38,18 @@ describe 'jaabro.js' do
       //return [ c.getKm(), c.getMake() ];
 
       var MyParser = Jaabro.make2(function(p) {
+
         function hello(i) { return p.rex('h', i, /hello */); }
         function world(i) { return p.str('w', i, 'world'); }
         function root(i) { return p.seq('hw', i, hello, world); }
-        return root;
+
+        function rewrite_xxx(t) { return 'y'; }
+        function rewrite(t) { return eval('rewrite_' + t.name)(t); }
+
+        return [ root, rewrite ];
       });
-      return MyParser.parse('hello').toArray();
+      return MyParser.rewrite({ name: 'xxx' });
+      //return MyParser.parse('hello').toArray();
     })).to eq(:x)
   end
 end
