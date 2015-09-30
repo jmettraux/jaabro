@@ -28,6 +28,9 @@ XEL =
   %{
     var Xel = Jaabro.make(function() {
 
+      //
+      // parse
+
       function pa(i) { return str(null, i, '('); }
       function pz(i) { return str(null, i, ')'); }
       function com(i) { return str(null, i, ','); }
@@ -41,6 +44,22 @@ XEL =
       function exp(i) { return alt('exp', i, fun, num); }
 
       var root = exp;
+
+      //
+      // rewrite
+
+      function rewrite_num(t) { return parseInt(t.string(), 10); }
+
+      function rewrite_fun(t) {
+        var a = [];
+        a.push(t.children[0].string());
+        t.children[1].children.forEach(function(c) {
+          if (c.name) a.push(rewrite(c));
+        });
+        return a;
+      }
+
+      function rewrite_exp(t) { return rewrite(t.children[0]); }
     });
   }
 
@@ -51,7 +70,13 @@ describe 'jaabro.js' do
 
     describe '.parse' do
 
-      it 'works'
+      it 'works' do
+        expect(js(XEL + %{
+          return Xel.parse('MUL(SUM(1,2),-3)');
+        })).to eq(
+          [ 'MUL', [ 'SUM', 1, 2 ], -3 ]
+        )
+      end
 
       it 'works (rewrite: false)' do
 

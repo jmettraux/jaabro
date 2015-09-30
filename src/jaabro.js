@@ -59,13 +59,18 @@ Jaabro.Result.prune = function() {
   this.children = cn;
 };
 
+Jaabro.Result.string = function() {
+
+  return this.input.slice(this.offset, this.length);
+};
+
 Jaabro.Result.toArray = function(opts) {
 
   var cn = null;
 
   if (this.result === 1 && this.children.length === 0)
   {
-    cn = this.input.slice(this.offset, this.length);
+    cn = this.string();
   }
   else {
     cn = []; for (var i = 0, l = this.children.length; i < l; i++) {
@@ -89,7 +94,7 @@ Jaabro.Result.toString = function() {
   string.push(this.offset, ',', this.length);
 
   if (this.result === 1 && this.children.length === 0) {
-    string.push(' ', JSON.stringify(this.input.slice(this.offset, this.length)));
+    string.push(' ', JSON.stringify(this.string()));
   }
 
   this.children.forEach(function(c) { c.toString(depth + 1, string); });
@@ -416,6 +421,8 @@ Jaabro.parse = function(string, opts) {
   if (opts.prune != false && t.result !== 1) return null;
 
   if (t.parter === 'all') t = t.children[0];
+
+  if (opts.rewrite !== false) return this.rewrite(t);
 
   return t;
 };
