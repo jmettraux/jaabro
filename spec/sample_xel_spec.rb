@@ -26,23 +26,22 @@ require 'spec_helper'
 #end
 XEL =
   %{
-    var Xel = Jaabro.make({
+    var Xel = Jaabro.make(function() {
 
-      pa: function(i) { return this.str(nil, i, '('); },
-      pz: function(i) { return this.str(nil, i, ')'); },
-      com: function(i) { return this.str(nil, i, ','); },
+      function pa(i) { return str(null, i, '('); }
+      function pz(i) { return str(null, i, ')'); }
+      function com(i) { return str(null, i, ','); }
 
-      num: function(i) { return this.rex('num', i, /-?[0-9]+/); },
+      function num(i) { return rex('num', i, /-?[0-9]+/); }
 
-      args: function(i) { return this.eseq('args', i, pa, exp, com, pz); },
-      funame: function(i) { return this.rex('funame', i, /[A-Z][A-Z0-9]*/); },
-      fun: function(i) { return this.seq('fun', i, funame, args); },
+      function args(i) { return eseq('args', i, pa, exp, com, pz); }
+      function funame(i) { return rex('funame', i, /[A-Z][A-Z0-9]*/); }
+      function fun(i) { return seq('fun', i, funame, args); }
 
-      exp: function(i) { return this.alt('exp', i, fun, num); },
+      function exp(i) { return alt('exp', i, fun, num); }
 
-      //root: this.exp
+      var root = exp;
     });
-    Xel.root = Xel.exp;
   }
 
 
@@ -57,7 +56,7 @@ describe 'jaabro.js' do
       it 'works (rewrite: false)' do
 
         expect(js(XEL + %{
-          return Xel.parse('MUL(7,-3)', { rewrite: false });
+          return Xel.parse('MUL(7,-3)', { rewrite: false }).toArray();
         })).to eq(
           :x
         )
