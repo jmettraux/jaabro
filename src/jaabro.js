@@ -325,16 +325,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 };
 Jaabro.jseq = Jaabro.eseq;
 
-Jaabro.make = function(object) {
-
-  var o = Object.create(Jaabro);
-  for (var k in object) o[k] = object[k];
-
-  return o;
-};
-Jaabro.makeParser = Jaabro.make;
-
-Jaabro.make2 = function(fun) {
+Jaabro.make = function(fun) {
 
   var p = Object.create(Jaabro);
 
@@ -354,12 +345,14 @@ Jaabro.make2 = function(fun) {
   //print(">>>" + funs + "<<<");
   eval('fun = ' + funs);
 
-  var rw = fun();
+  //var rw = fun.call(p, p);
+  var rw = fun(p); // pass the parser, could be useful
   p.root = rw[0];
   p.rewrite = rw[1];
 
   return p;
 };
+Jaabro.makeParser = Jaabro.make;
 
 Jaabro.makeInput = function(string, opts) {
 

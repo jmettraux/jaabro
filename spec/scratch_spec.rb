@@ -37,7 +37,7 @@ describe 'jaabro.js' do
       //});
       //return [ c.getKm(), c.getMake() ];
 
-      var MyParser = Jaabro.make2(function() {
+      var MyParser = Jaabro.make(function() {
 
         function hello(i) { return rex('h', i, /hello */); }
         function world(i) { return str('w', i, 'world'); }
@@ -47,7 +47,12 @@ describe 'jaabro.js' do
       });
       //return MyParser.rewrite({ name: 'xxx' });
       return MyParser.parse('hello').toArray();
-    })).to eq(:x)
+    })).to eq(
+      [ 'hw', 0, 0, 0, 'seq', [
+        [ 'h', 1, 0, 5, 'rex', 'hello' ],
+        [ 'w', 0, 5, 0, 'str', [] ]
+      ] ]
+    )
   end
 end
 
