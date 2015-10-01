@@ -8,22 +8,6 @@
 require 'spec_helper'
 
 
-#module Sample::Xel include Raabro
-#
-#  # parse
-#
-#  # ...
-#
-#  # rewrite
-#
-#  def rewrite_exp(t); rewrite(t.children[0]); end
-#  def rewrite_num(t); t.string.to_i; end
-#
-#  def rewrite_fun(t)
-#    [ t.children[0].string ] +
-#    t.children[1].children.inject([]) { |a, e| a << rewrite(e) if e.name; a }
-#  end
-#end
 XEL =
   %{
     var Xel = Jaabro.make(function() {
@@ -71,6 +55,7 @@ describe 'jaabro.js' do
     describe '.parse' do
 
       it 'works' do
+
         expect(js(XEL + %{
           return Xel.parse('MUL(SUM(1,2),-3)');
         })).to eq(

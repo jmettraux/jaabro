@@ -355,16 +355,19 @@ Jaabro.make = function(fun) {
   var p = Object.create(Jaabro);
 
   var funs = fun.toString();
-  [
-    'all', 'alt', 'altg', 'eseq', 'jseq', 'ren', 'rep', 'rex', 'seq', 'str'
-  ].forEach(function(f) {
+  'all alt altg eseq jseq ren rep rex seq str'.split(' ').forEach(function(f) {
     funs = funs.replace(
       new RegExp(" +" + f + "\\(", 'g'),
       ' Jaabro.' + f + '(');
   });
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +
-    'function rewrite(t) { return eval("rewrite_" + t.name)(t); };' +
+    'try { eval("rewrite") } catch(err) {' +
+      'function rewrite(t) { return eval("rewrite_" + t.name)(t); };' +
+    '};' +
+    'try { eval("root") } catch(err) {' +
+      'throw new Error("missing function root() parser");' +
+    '};' +
     'return [ root, rewrite ];' +
     '}';
   //print(">>>" + funs + "<<<");
