@@ -362,10 +362,10 @@ Jaabro.make = function(fun) {
   });
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +
-    'try { eval("rewrite") } catch(err) {' +
-      'function rewrite(t) { return eval("rewrite_" + t.name)(t); };' +
-    '};' +
-    'try { eval("root") } catch(err) {' +
+    'var rewrite;' +
+    'rewrite = ' +
+      'rewrite || function(t) { return eval("rewrite_" + t.name)(t); };' +
+    'try { eval("root"); } catch(err) {' +
       'throw new Error("missing function root() parser");' +
     '};' +
     'return [ root, rewrite ];' +

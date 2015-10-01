@@ -16,6 +16,16 @@ NO_ROOT =
     });
   }
 
+OWN_REWRITE =
+  %{
+    var OwnRewrite = Jaabro.make(function() {
+
+      function root(i) { return str(null, i, 'hello'); }
+
+      function rewrite(t) { return "rewritten"; }
+    });
+  }
+
 
 describe 'jaabro.js' do
 
@@ -27,6 +37,18 @@ describe 'jaabro.js' do
         js(NO_ROOT)
       }.to raise_error(
         ExecJS::ProgramError, 'Error: missing function root() parser'
+      )
+    end
+  end
+
+  describe 'OwnRewrite' do
+
+    it 'provides its own rewrite(t) implementation' do
+
+      expect(js(OWN_REWRITE + %{
+        return OwnRewrite.parse('hello')
+      })).to eq(
+        'rewritten'
       )
     end
   end
