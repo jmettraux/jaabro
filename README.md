@@ -126,6 +126,42 @@ Xelp.parse('10 + IF(c10 = "yes", 11, 0)');
 The [raabro README](https://github.com/jmettraux/raabro#readme) will help.
 
 
+## "classes"
+
+Basically, one only has to know about `Jaabro.Result`. It's the input to any `rewrite` method.
+
+### Jaabro.Result
+
+A jaabro result node.
+
+```js
+{
+  name: 'exp',
+  result: 1,
+  input: someJaabroInput,
+  offset: 0,
+  length: 5,
+  parter: 'seq',
+  children: [
+    // ...
+  ]
+}
+```
+
+This "class" understands the following methods:
+
+* `toArray`: returns an array representation of the node and its children
+* `toString`: returns a string representation of the node and its children
+* `string`: returns the string matched by the result node
+
+As seen above:
+```js
+  function rewrite_var(t) { return [ 'var', t.string().trim() ]; }
+  function rewrite_number(t) { return [ 'num', t.string().trim() ]; }
+```
+The `t` is a `Jaabro.result`. The results for "var" and "num" named results get wrapped into some kind of s-expression with the result node string trimmed.
+
+
 ## LICENSE
 
 MIT, see [LICENSE.txt](LICENSE.txt)
