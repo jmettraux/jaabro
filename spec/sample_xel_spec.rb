@@ -89,5 +89,38 @@ describe 'jaabro.js' do
       end
     end
   end
+
+  describe 'Jaabro.Result' do
+
+    describe '.lookup(name)' do
+
+      it 'returns null when it finds nothing' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          return r.lookup('funk');
+        })).to eq(
+          nil
+        )
+      end
+
+      it 'returns the first matching node (depth first)' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          return r.children[0].lookup('exp').toString();
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+        }.strip)
+      end
+    end
+
+    describe '.gather(name)' do
+
+      it 'returns [] when it finds nothing'
+      it 'returns all the matching nodes (depth first)'
+    end
+  end
 end
 

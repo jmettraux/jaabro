@@ -64,6 +64,17 @@ Jaabro.Result.string = function() {
   return this.input.slice(this.offset, this.length);
 };
 
+Jaabro.Result.lookup = function(name) {
+
+  if (this.name === name) return this;
+
+  for (var i = 0, l = this.children.length; i < l; i++) {
+    var r = this.children[i].lookup(name);
+    if (r) return r;
+  }
+  return null;
+};
+
 Jaabro.Result.toArray = function(opts) {
 
   var cn = null;
