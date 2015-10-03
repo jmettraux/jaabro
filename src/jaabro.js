@@ -75,6 +75,18 @@ Jaabro.Result.lookup = function(name) {
   return null;
 };
 
+Jaabro.Result.gather = function(name) {
+
+  var acc = arguments[1] || [];
+
+  if (this.name === name)
+    acc.push(this);
+  else
+    this.children.forEach(function(c) { c.gather(name, acc) });
+
+  return acc;
+};
+
 Jaabro.Result.toArray = function(opts) {
 
   var cn = null;

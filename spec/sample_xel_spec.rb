@@ -118,8 +118,31 @@ describe 'jaabro.js' do
 
     describe '.gather(name)' do
 
-      it 'returns [] when it finds nothing'
-      it 'returns all the matching nodes (depth first)'
+      it 'returns [] when it finds nothing' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          return r.children[0].gather('funk');
+        })).to eq(
+          []
+        )
+      end
+
+      it 'returns all the matching nodes (depth first)' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.children[0].gather('exp');
+          var a = []; ns.forEach(function(n) { a.push(n.toString()); });
+          return a.join('\\n---\\n');
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+---
+1 "exp" 6,2
+  1 "num" 6,2 "-3"
+        }.strip)
+      end
     end
   end
 end
