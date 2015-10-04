@@ -128,9 +128,9 @@ The [raabro README](https://github.com/jmettraux/raabro#readme) will help.
 
 ## "classes"
 
-Basically, one only has to know about `Jaabro.Result`. It's the input to any `rewrite` method.
+Basically, one only has to know about `Jaabro.Node`. It's the input to any `rewrite` method.
 
-### Jaabro.Result
+### Jaabro.Node
 
 A jaabro result node.
 

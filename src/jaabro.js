@@ -47,11 +47,11 @@ Jaabro.Input.match = function(str_or_rex) {
 };
 
 //
-// Jaabro.Result
+// Jaabro.Node
 
-Jaabro.Result = {};
+Jaabro.Node = {};
 
-Jaabro.Result.prune = function() {
+Jaabro.Node.prune = function() {
 
   var cn = []; this.children.forEach(function(c) {
     if (c.result === 1) cn.push(c);
@@ -59,12 +59,12 @@ Jaabro.Result.prune = function() {
   this.children = cn;
 };
 
-Jaabro.Result.string = function() {
+Jaabro.Node.string = function() {
 
   return this.input.slice(this.offset, this.length);
 };
 
-Jaabro.Result.lookup = function(name) {
+Jaabro.Node.lookup = function(name) {
 
   if (this.name === name) return this;
 
@@ -75,7 +75,7 @@ Jaabro.Result.lookup = function(name) {
   return null;
 };
 
-Jaabro.Result.gather = function(name) {
+Jaabro.Node.gather = function(name) {
 
   var acc = arguments[1] || [];
 
@@ -87,7 +87,7 @@ Jaabro.Result.gather = function(name) {
   return acc;
 };
 
-Jaabro.Result.toArray = function(opts) {
+Jaabro.Node.toArray = function(opts) {
 
   var cn = null;
 
@@ -105,7 +105,7 @@ Jaabro.Result.toArray = function(opts) {
     this.name, this.result, this.offset, this.length, this.parter, cn ];
 };
 
-Jaabro.Result.toString = function() {
+Jaabro.Node.toString = function() {
 
   var depth = arguments[0] || 0;
   var string = arguments[1] || [];
@@ -131,7 +131,7 @@ Jaabro.Result.toString = function() {
 Jaabro.str = function(name, input, str) {
 
   var r =
-    this.makeResult(name, input, (typeof str) === 'string' ? 'str' : 'rex');
+    this.makeNode(name, input, (typeof str) === 'string' ? 'str' : 'rex');
 
   var l = input.match(str);
   if (l > -1) {
@@ -154,7 +154,7 @@ Jaabro.alt = function(name, input, parsers_) {
   var g = false; if (l === true || l === false) { ps.pop(); g = l; }
 
   var o = input.offset;
-  var r = this.makeResult(name, input, g ? 'altg' : 'alt');
+  var r = this.makeNode(name, input, g ? 'altg' : 'alt');
   var cr = null;
 
   while (true) {
@@ -226,7 +226,7 @@ Jaabro.quantify = function(parser) {
 Jaabro.seq = function(name, input, parsers_) {
 
   var o = input.offset;
-  var r = this.makeResult(name, input, 'seq');
+  var r = this.makeNode(name, input, 'seq');
   var cr = null;
 
   var ps = []; for (var i = 2, l = arguments.length; i < l; i++) {
@@ -270,7 +270,7 @@ Jaabro.rep = function(name, input, parser, min, max) {
   if (max === null || max === undefined || max < 0) max = 0;
 
   var o = input.offset;
-  var r = this.makeResult(name, input, 'rep');
+  var r = this.makeNode(name, input, 'rep');
   var count = 0;
 
   while (true) {
@@ -306,7 +306,7 @@ Jaabro.all = function(name, input, parser) {
 
   var o = input.offset;
   var l = input.string.length - o;
-  var r = this.makeResult(name, input, 'all');
+  var r = this.makeNode(name, input, 'all');
 
   var cr = parser(input);
   r.children.push(cr);
@@ -327,7 +327,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
   }
 
   var o = input.offset;
-  var r = this.makeResult(name, input, j ? 'jseq' : 'eseq');
+  var r = this.makeNode(name, input, j ? 'jseq' : 'eseq');
   r.result = 1;
   var cr = null;
 
@@ -415,9 +415,9 @@ Jaabro.makeInput = function(string, opts) {
   return i;
 };
 
-Jaabro.makeResult = function(name, input, parter) {
+Jaabro.makeNode = function(name, input, parter) {
 
-  var r = Object.create(Jaabro.Result);
+  var r = Object.create(Jaabro.Node);
   r.name = name;
   r.result = 0;
   r.input = input;

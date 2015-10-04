@@ -90,7 +90,7 @@ describe 'jaabro.js' do
     end
   end
 
-  describe 'Jaabro.Result' do
+  describe 'Jaabro.Node' do
 
     describe '.lookup(name)' do
 
