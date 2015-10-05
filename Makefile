@@ -4,7 +4,8 @@ VERSION:=$(shell grep VERSION src/jaabro.js | ruby -e "puts gets.match(/VERSION:
 pkg:
 	mkdir -p pkg
 	cp src/jaabro.js pkg/jaabro-$(VERSION).js
-	java -jar tools/closure-compiler.jar --js src/jaabro.js > pkg/jaabro-$(VERSION).min.js
+	#java -jar tools/closure-compiler.jar --js src/jaabro.js > pkg/jaabro-$(VERSION).min.js
+	cat src/jaabro.js | jsmin > pkg/jaabro-$(VERSION).min.js
 
 .PHONY: pkg
 

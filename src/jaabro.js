@@ -394,7 +394,9 @@ Jaabro.make = function(fun) {
     'return [ root, rewrite ];' +
     '}';
   //print(">>>" + funs + "<<<");
-  eval('fun = ' + funs);
+
+  //eval('fun = ' + funs);
+  fun = eval(funs);
 
   //var rw = fun.call(p, p);
   var rw = fun(p); // pass the parser, could be useful
