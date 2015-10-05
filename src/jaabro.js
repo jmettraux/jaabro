@@ -386,8 +386,9 @@ Jaabro.make = function(fun) {
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +
     'var rewrite;' +
-    'rewrite = ' +
-      'rewrite || function(t) { return eval("rewrite_" + t.name)(t); };' +
+    'rewrite= ' +
+      'rewrite ||' +
+      'function(t) { return eval("rewrite_" + t.name)(t); };' +
     'try { eval("root"); } catch(err) {' +
       'throw new Error("missing function root() parser");' +
     '};' +
@@ -396,7 +397,7 @@ Jaabro.make = function(fun) {
   //print(">>>" + funs + "<<<");
 
   //eval('fun = ' + funs);
-  fun = eval(funs);
+  fun = eval('(' + funs + ')');
 
   //var rw = fun.call(p, p);
   var rw = fun(p); // pass the parser, could be useful
