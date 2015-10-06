@@ -6,6 +6,9 @@ SHA:=$(shell git log -1 --format="%h")
 NOW:=$(shell date)
 
 
+spec:
+	bundle exec rspec
+
 pkg_plain:
 	mkdir -p pkg
 	cp src/jaabro.js pkg/jaabro-$(VERSION).js
@@ -20,5 +23,6 @@ pkg_mini:
 
 pkg: pkg_plain pkg_mini
 
-.PHONY: pkg
+
+.PHONY: spec pkg
 
