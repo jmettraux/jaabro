@@ -120,7 +120,12 @@ Xelp.parse('10 + IF(c10 = "yes", 11, 0)');
 
 Xelp.parse('10 + IF(c10 = "yes", 11, 0)');
   // -- yields -->
-["SUM",["num","10"],["IF",["cmp","=",["var","c10"],["str","yes"]],["num","11"],["num","0"]]]
+["SUM",
+  ["num","10"],
+  ["IF",
+    ["cmp","=",["var","c10"],["str","yes"]],
+    ["num","11"],
+    ["num","0"]]]
 ```
 
 The [raabro README](https://github.com/jmettraux/raabro#readme) will help.
