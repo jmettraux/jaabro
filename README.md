@@ -150,9 +150,11 @@ A jaabro result node.
 
 This "class" understands the following methods:
 
-* `toArray`: returns an array representation of the node and its children
-* `toString`: returns a string representation of the node and its children
-* `string`: returns the string matched by the result node
+* `toArray()`: returns an array representation of the node and its children
+* `toString()`: returns a string representation of the node and its children
+* `string()`: returns the string matched by the result node
+* `lookup(name)`: returns the first node with the given name (might return "this" node)
+* `gather(name)`: returns all the nodes with the given name (starting with "this" node)
 
 As seen above:
 ```js
