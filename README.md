@@ -8,6 +8,15 @@ Brother to [raabro](https://github.com/jmettraux/raabro), son to [aabro](https:/
 
 ## a sample parser
 
+A parser is made by calling `Jaabro.makeParser` with a function. This function should hold the definitions of the parse functions making up the final parser, and also the rewrite functions used to rewrite the parse tree resulting from the parsing.
+
+A parse function might look like
+```js
+function fun(i) { return seq('fun', i, funname, funargs); }
+```
+This `fun` function expects a sequence `funame` then `funargs`. Those two arguments are parse functions themselves. Parse functions generally call a Jaabro function like `seq()`, `rex()`, `eseq()` to compose a bit higher level parser.
+
+Here is a complete example:
 ```js
 var Xelp = Jaabro.makeParser(function() {
 
