@@ -16,6 +16,8 @@ function fun(i) { return seq('fun', i, funname, funargs); }
 ```
 This `fun` function expects a sequence `funame` then `funargs`. Those two arguments are parse functions themselves. Parse functions generally call a Jaabro function like `seq()`, `rex()`, `eseq()` to compose a bit higher level parser.
 
+Rewrite rules are of the form `rewrite_{tree_name}(tree)`. They take as input a node of a parse tree and return a re-interpretation / rewrite of that tree. By default Jaabro takes the tree_name coming from the parse functions to call the corresponding rewrite functions. For example a parse tree whose root node is "expression" will be handed to `rewrite_expression(tree)`.
+
 Here is a complete example:
 ```js
 var Xelp = Jaabro.makeParser(function() {
@@ -137,7 +139,40 @@ Xelp.parse('10 + IF(c10 = "yes", 11, 0)');
     ["num","0"]]]
 ```
 
-The [raabro README](https://github.com/jmettraux/raabro#readme) will help.
+## basic parsers
+
+The first parameter is the name used by rewrite rules.
+The second parameter is a `Jaabro.Input` instance, mostly a wrapped string.
+
+```js
+function str(name, input, string)
+  // matching a string
+
+function rex(name, input, regex_or_string)
+  // matching a regexp
+  // no need for ^ or \A, checks the match occurs at current offset
+
+function seq(name, input, parser0, parser1, ...)
+  // a sequence of parsers
+
+function alt(name, input, parser0, parser1, ...)
+  // tries the parsers returns as soon as one succeeds
+
+function altg(name, input, parser0, parser1, ...)
+  // tries all the parsers, returns with the longest match
+
+function rep(name, input, parser, min, max=0)
+  // repeats the the wrapped parser
+
+function ren(name, input, parser)
+  // renames the output of the wrapped parser
+
+function jseq(name, input, eltpa, seppa)
+  // seq(name, input, eltpa, seppa, eltpa, seppa, eltpaa, seppa, ...)
+
+function eseq(name, input, startpa, eltpa, seppa, endpa)
+  // seq(name, input, startpa, eltpa, seppa, eltpa, seppa, ..., endpa)
+```
 
 
 ## "classes"
