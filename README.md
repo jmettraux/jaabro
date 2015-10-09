@@ -213,6 +213,29 @@ As seen above:
 The `t` is a `Jaabro.result`. The results for "var" and "num" named results get wrapped into some kind of s-expression with the result node string trimmed.
 
 
+## providing a custom rewrite() function
+
+As seen above, Jaabro provides a default implementation of `rewrite()` one that walks the parse tree and calls `rewrite_{node_name}(node)`. If one needs to completely bypass this default, providing a new `rewrite(node)` is OK.
+
+```js
+var MyParser = Jaabro.makeParser(function() {
+
+  // parse
+
+  // ...
+
+  var root = thatParser;
+
+  // rewrite
+
+  function rewrite(t) {
+
+    // follow some custom logic and return result...
+  }
+});
+```
+
+
 ## LICENSE
 
 MIT, see [LICENSE.txt](LICENSE.txt)
