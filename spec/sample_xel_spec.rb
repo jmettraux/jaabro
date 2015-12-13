@@ -21,8 +21,8 @@ XEL =
 
       function num(i) { return rex('num', i, /-?[0-9]+/); }
 
-      function args(i) { return eseq('args', i, pa, exp, com, pz); }
-      function funame(i) { return rex('funame', i, /[A-Z][A-Z0-9]*/); }
+      function args(i) { return eseq(null, i, pa, exp, com, pz); }
+      function funame(i) { return rex(null, i, /[A-Z][A-Z0-9]*/); }
       function fun(i) { return seq('fun', i, funame, args); }
 
       function exp(i) { return alt('exp', i, fun, num); }
@@ -70,8 +70,8 @@ describe 'jaabro.js' do
         })).to eq(%{
 1 "exp" 0,9
   1 "fun" 0,9
-    1 "funame" 0,3 "MUL"
-    1 "args" 3,6
+    1 null 0,3 "MUL"
+    1 null 3,6
       1 null 3,1 "("
       1 "exp" 4,1
         1 "num" 4,1 "7"
