@@ -171,6 +171,9 @@ Jaabro.alt = function(name, input, parsers_) {
         if (cr) cr.result = 0;
         cr = rr;
       }
+      else {
+        rr.result = 0;
+      }
     }
     else {
       cr = rr;
