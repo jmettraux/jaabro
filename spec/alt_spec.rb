@@ -101,8 +101,8 @@ describe 'jaabro.js' do
       })).to eq(
         [
           [ 'g', 1, 0, 2, 'altg', [
-            [ 'onex', 0, 0, 1, 'str', [] ],
-            [ 'twox', 1, 0, 2, 'str', 'xx' ]
+            [ 'twox', 1, 0, 2, 'str', 'xx' ],
+            [ 'onex', 0, 0, 1, 'str', [] ]
           ] ],
           2
         ]
