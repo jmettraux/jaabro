@@ -32,18 +32,17 @@ XELL =
       //
       // rewrite
 
-      function rewrite_num(t) { return parseInt(t.string(), 10); }
+      function rewrite_num(t) {
+        return parseInt(t.string(), 10);
+      }
 
       function rewrite_fun(t) {
         var a = [];
         a.push(t.children[0].string());
-        t.children[1].children.forEach(function(c) {
-          if (c.name) a.push(rewrite(c));
-        });
+        t.children[1].oddChildren().forEach(
+          function(c) { a.push(rewrite(c)); });
         return a;
       }
-
-      //function rewrite_exp(t) { return rewrite(t.children[0]); }
     });
   }
 

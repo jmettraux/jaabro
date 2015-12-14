@@ -87,6 +87,20 @@ Jaabro.Node.gather = function(name) {
   return acc;
 };
 
+Jaabro.Node.eoChildren = function(start) {
+
+  var a = [];
+
+  for (var i = start, l = this.children.length; i < l; i = i + 2) {
+    a.push(this.children[i]);
+  };
+
+  return a;
+};
+
+Jaabro.Node.oddChildren = function() { return this.eoChildren(1); };
+Jaabro.Node.evenChildren = function() { return this.eoChildren(0); };
+
 Jaabro.Node.toArray = function(opts) {
 
   var cn = null;
