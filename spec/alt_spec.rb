@@ -109,6 +109,26 @@ describe 'jaabro.js' do
       )
     end
 
+    it 'takes the longest and latest winner' do
+
+      expect(js(%{
+
+        var i = Jaabro.makeInput('xx');
+        var r = Jaabro.altg('g', i, twox, onex, deux);
+
+        return [ r.toArray({ leaves: true }), i.offset ];
+      })).to eq(
+        [
+          [ 'g', 1, 0, 2, 'altg', [
+            [ 'twox', 0, 0, 2, 'str', [] ],
+            [ 'onex', 0, 0, 1, 'str', [] ],
+            [ 'deux', 1, 0, 2, 'str', 'xx' ]
+          ] ],
+          2
+        ]
+      )
+    end
+
     it 'prunes' do
 
       expect(js(%{

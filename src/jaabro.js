@@ -181,7 +181,7 @@ Jaabro.alt = function(name, input, parsers_) {
     input.offset = o;
 
     if (g) {
-      if (rr.result === 1 && rr.length > (cr ? cr.length : -1)) {
+      if (rr.result === 1 && rr.length >= (cr ? cr.length : -1)) {
         if (cr) cr.result = 0;
         cr = rr;
       }

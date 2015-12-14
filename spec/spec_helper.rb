@@ -30,6 +30,7 @@ $source =
 
     var onex = function(i) { return Jaabro.str('onex', i, 'x'); };
     var twox = function(i) { return Jaabro.str('twox', i, 'xx'); };
+    var deux = function(i) { return Jaabro.str('deux', i, 'xx'); };
   }
 
 def js(s)
