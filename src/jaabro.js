@@ -378,6 +378,17 @@ Jaabro.jseq = Jaabro.eseq;
 
 Jaabro.make = function(fun) {
 
+  var rw_ = function(t) {
+    for (var i = 0, l = t.children.length; i < l; i++) {
+      var c = t.children[i];
+      if (c.length > 0 || c.name) return rewrite(c);
+    }
+    return null;
+  };
+  var rw = function(t) {
+    return eval('rewrite_' + (t.name ? t.name : ''))(t);
+  };
+
   var p = Object.create(Jaabro);
 
   var funs = fun.toString();
@@ -388,10 +399,8 @@ Jaabro.make = function(fun) {
   });
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +
-    'var rewrite;' +
-    'rewrite= ' +
-      'rewrite ||' +
-      'function(t) { return eval("rewrite_" + t.name)(t); };' +
+    'var rewrite_; rewrite_ = rewrite_ || ' + rw_ + ';' +
+    'var rewrite; rewrite = rewrite ||' + rw + ';' +
     'try { eval("root"); } catch(err) {' +
       'throw new Error("missing function root() parser");' +
     '};' +
