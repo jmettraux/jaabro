@@ -47,11 +47,11 @@ Jaabro.Input.match = function(str_or_rex) {
 };
 
 //
-// Jaabro.Node
+// Jaabro.Tree
 
-Jaabro.Node = {};
+Jaabro.Tree = {};
 
-Jaabro.Node.prune = function() {
+Jaabro.Tree.prune = function() {
 
   var cn = []; this.children.forEach(function(c) {
     if (c.result === 1) cn.push(c);
@@ -59,12 +59,12 @@ Jaabro.Node.prune = function() {
   this.children = cn;
 };
 
-Jaabro.Node.string = function() {
+Jaabro.Tree.string = function() {
 
   return this.input.slice(this.offset, this.length);
 };
 
-Jaabro.Node.lookup = function(name) {
+Jaabro.Tree.lookup = function(name) {
 
   if (this.name === name) return this;
 
@@ -75,7 +75,7 @@ Jaabro.Node.lookup = function(name) {
   return null;
 };
 
-Jaabro.Node.gather = function(name) {
+Jaabro.Tree.gather = function(name) {
 
   var acc = arguments[1] || [];
 
@@ -87,7 +87,7 @@ Jaabro.Node.gather = function(name) {
   return acc;
 };
 
-Jaabro.Node.eoChildren = function(start) {
+Jaabro.Tree.eoChildren = function(start) {
 
   var a = [];
 
@@ -98,10 +98,10 @@ Jaabro.Node.eoChildren = function(start) {
   return a;
 };
 
-Jaabro.Node.oddChildren = function() { return this.eoChildren(1); };
-Jaabro.Node.evenChildren = function() { return this.eoChildren(0); };
+Jaabro.Tree.oddChildren = function() { return this.eoChildren(1); };
+Jaabro.Tree.evenChildren = function() { return this.eoChildren(0); };
 
-Jaabro.Node.toArray = function(opts) {
+Jaabro.Tree.toArray = function(opts) {
 
   var cn = null;
 
@@ -119,7 +119,7 @@ Jaabro.Node.toArray = function(opts) {
     this.name, this.result, this.offset, this.length, this.parter, cn ];
 };
 
-Jaabro.Node.toString = function() {
+Jaabro.Tree.toString = function() {
 
   var depth = arguments[0] || 0;
   var string = arguments[1] || [];
@@ -145,7 +145,7 @@ Jaabro.Node.toString = function() {
 Jaabro.str = function(name, input, str) {
 
   var r =
-    this.makeNode(name, input, (typeof str) === 'string' ? 'str' : 'rex');
+    this.makeTree(name, input, (typeof str) === 'string' ? 'str' : 'rex');
 
   var l = input.match(str);
   if (l > -1) {
@@ -168,7 +168,7 @@ Jaabro.alt = function(name, input, parsers_) {
   var g = false; if (l === true || l === false) { ps.pop(); g = l; }
 
   var o = input.offset;
-  var r = this.makeNode(name, input, g ? 'altg' : 'alt');
+  var r = this.makeTree(name, input, g ? 'altg' : 'alt');
   var cr = null;
 
   while (true) {
@@ -243,7 +243,7 @@ Jaabro.quantify = function(parser) {
 Jaabro.seq = function(name, input, parsers_) {
 
   var o = input.offset;
-  var r = this.makeNode(name, input, 'seq');
+  var r = this.makeTree(name, input, 'seq');
   var cr = null;
 
   var ps = []; for (var i = 2, l = arguments.length; i < l; i++) {
@@ -287,7 +287,7 @@ Jaabro.rep = function(name, input, parser, min, max) {
   if (max === null || max === undefined || max < 0) max = 0;
 
   var o = input.offset;
-  var r = this.makeNode(name, input, 'rep');
+  var r = this.makeTree(name, input, 'rep');
   var count = 0;
 
   while (true) {
@@ -323,7 +323,7 @@ Jaabro.all = function(name, input, parser) {
 
   var o = input.offset;
   var l = input.string.length - o;
-  var r = this.makeNode(name, input, 'all');
+  var r = this.makeTree(name, input, 'all');
 
   var cr = parser(input);
   r.children.push(cr);
@@ -344,7 +344,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
   }
 
   var o = input.offset;
-  var r = this.makeNode(name, input, j ? 'jseq' : 'eseq');
+  var r = this.makeTree(name, input, j ? 'jseq' : 'eseq');
   r.result = 1;
   var cr = null;
 
@@ -444,9 +444,9 @@ Jaabro.makeInput = function(string, opts) {
   return i;
 };
 
-Jaabro.makeNode = function(name, input, parter) {
+Jaabro.makeTree = function(name, input, parter) {
 
-  var r = Object.create(Jaabro.Node);
+  var r = Object.create(Jaabro.Tree);
   r.name = name;
   r.result = 0;
   r.input = input;

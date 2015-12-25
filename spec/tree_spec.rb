@@ -10,7 +10,7 @@ require 'spec_helper'
 
 describe 'jaabro.js' do
 
-  describe 'Jaabro.Node' do
+  describe 'Jaabro.Tree' do
 
     describe '.lookup(name)' do
 
