@@ -66,7 +66,12 @@ Jaabro.Tree.string = function() {
 
 Jaabro.Tree.lookup = function(name) {
 
-  if (this.name === name) return this;
+  if (name === null) { if (this.name) return this; }
+  else { if (this.name === name) return this; }
+  return this.sublookup(name);
+};
+
+Jaabro.Tree.sublookup = function(name) {
 
   for (var i = 0, l = this.children.length; i < l; i++) {
     var r = this.children[i].lookup(name);
