@@ -33,6 +33,45 @@ $source =
     var deux = function(i) { return Jaabro.str('deux', i, 'xx'); };
   }
 
+XEL =
+  %{
+    var Xel = Jaabro.make(function() {
+
+      //
+      // parse
+
+      function pa(i) { return str(null, i, '('); }
+      function pz(i) { return str(null, i, ')'); }
+      function com(i) { return str(null, i, ','); }
+
+      function num(i) { return rex('num', i, /-?[0-9]+/); }
+
+      function args(i) { return eseq(null, i, pa, exp, com, pz); }
+      function funame(i) { return rex(null, i, /[A-Z][A-Z0-9]*/); }
+      function fun(i) { return seq('fun', i, funame, args); }
+
+      function exp(i) { return alt('exp', i, fun, num); }
+
+      var root = exp;
+
+      //
+      // rewrite
+
+      function rewrite_num(t) { return parseInt(t.string(), 10); }
+
+      function rewrite_fun(t) {
+        var a = [];
+        a.push(t.children[0].string());
+        t.children[1].children.forEach(function(c) {
+          if (c.name) a.push(rewrite(c));
+        });
+        return a;
+      }
+
+      function rewrite_exp(t) { return rewrite(t.children[0]); }
+    });
+  }
+
 def js(s)
 
   ExecJS.compile($source).exec(s)
