@@ -84,10 +84,19 @@ Jaabro.Tree.gather = function(name) {
 
   var acc = arguments[1] || [];
 
-  if (this.name === name)
+  if ((name === null && this.name) || (name && this.name === name))
     acc.push(this);
   else
     this.children.forEach(function(c) { c.gather(name, acc) });
+
+  return acc;
+};
+
+Jaabro.Tree.subgather = function(name) {
+
+  var acc = arguments[1] || [];
+
+  this.children.forEach(function(c) { c.gather(name, acc) });
 
   return acc;
 };

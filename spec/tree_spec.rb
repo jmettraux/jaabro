@@ -100,12 +100,56 @@ describe 'jaabro.js' do
         }.strip)
       end
 
-      it 'returns all the named subtrees when given null as name'
+      it 'returns all the named subtrees when given null as name' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.children[0].children[1].gather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.toString()); });
+          return a.join('\\n---\\n');
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+---
+1 "exp" 6,2
+  1 "num" 6,2 "-3"
+        }.strip)
+      end
     end
 
     describe '.subgather(name)' do
 
-      it 'works'
+      it 'returns the subtrees with the given name among the callee children' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.subgather('exp');
+          var a = []; ns.forEach(function(n) { a.push(n.toString()); });
+          return a.join('\\n---\\n');
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+---
+1 "exp" 6,2
+  1 "num" 6,2 "-3"
+        }.strip)
+      end
+
+      it 'returns the named subtrees among the callee children' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.children[0].subgather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.toString()); });
+          return a.join('\\n---\\n');
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+---
+1 "exp" 6,2
+  1 "num" 6,2 "-3"
+        }.strip)
+      end
     end
   end
 end
