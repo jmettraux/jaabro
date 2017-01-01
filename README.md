@@ -181,6 +181,31 @@ function eseq(name, input, startpa, eltpa, seppa, endpa)
   // preceded by a `startpa` parser and followed by a `endpa` parser
 ```
 
+## the `seq` parser and its quantifiers
+
+`seq` is special, it understands "quantifiers": `'?'`, `'+'` or `'*'`. They make behave `seq` a bit like a classical regex.
+
+```javascript
+var CartParser = Jaabro.makeParser(function() {
+
+  function pa(i) { return rex(null, i, /\(\s*/); }
+
+  function fruit(i) {
+    return rex('fruit', i, /(tomato|apple|orange)/);
+  }
+  function vegetable(i) {
+    return rex('vegetable', i, /(potato|cabbage|carrot)/);
+  }
+
+  function cart(i) {
+    return seq('cart', i, fruit, '*', vegetable, '*');
+  }
+    // zero or more fruits followed by zero or more vegetables
+end
+```
+
+(Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `seq`)
+
 
 ## "classes"
 
