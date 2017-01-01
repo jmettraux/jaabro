@@ -168,10 +168,17 @@ function ren(name, input, parser)
   // renames the output of the wrapped parser
 
 function jseq(name, input, eltpa, seppa)
+  //
   // seq(name, input, eltpa, seppa, eltpa, seppa, eltpaa, seppa, ...)
+  //
+  // a sequence of `eltpa` parsers separated (joined) by `seppa` parsers
 
 function eseq(name, input, startpa, eltpa, seppa, endpa)
+  //
   // seq(name, input, startpa, eltpa, seppa, eltpa, seppa, ..., endpa)
+  //
+  // a sequence of `eltpa` parsers separated (joined) by `seppa` parsers
+  // preceded by a `startpa` parser and followed by a `endpa` parser
 ```
 
 
