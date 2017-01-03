@@ -169,7 +169,7 @@ function ren(name, input, parser)
 
 function jseq(name, input, eltpa, seppa)
   //
-  // seq(name, input, eltpa, seppa, eltpa, seppa, eltpaa, seppa, ...)
+  // seq(name, input, eltpa, seppa, eltpa, seppa, eltpa, seppa, ...)
   //
   // a sequence of `eltpa` parsers separated (joined) by `seppa` parsers
 
