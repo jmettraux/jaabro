@@ -1,4 +1,8 @@
 
 .ruby-version
 .rspec
+.bxsinfo.yaml
+.errors
+.rspec.out
+pkg/
 

@@ -9,10 +9,9 @@ require 'pp'
 require 'execjs'
 
 
-$source =
+JAABRO_SOURCE =
   File.read('src/jaabro.js') +
   %{
-
     // various parsers used for testing
 
     var ta = function(i) { return Jaabro.str(null, i, 'ta'); };
@@ -72,8 +71,14 @@ XEL =
     });
   }
 
-def js(s)
+module Helpers
 
-  ExecJS.compile($source).exec(s)
+  def js(s)
+
+    ExecJS.compile(JAABRO_SOURCE).exec(s)
+  end
 end
+RSpec.configure { |c| c.include(Helpers) }
+
+RSpec::Expectations.configuration .warn_about_potential_false_positives = false
 
