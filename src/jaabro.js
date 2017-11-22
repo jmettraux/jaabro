@@ -82,6 +82,7 @@ Jaabro.Tree.sublookup = function(name) {
 
 Jaabro.Tree.gather = function(name) {
 
+  if ( ! name) name = null;
   var acc = arguments[1] || [];
 
   if ((name === null && this.name) || (name && this.name === name))

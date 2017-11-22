@@ -84,6 +84,17 @@ describe 'jaabro.js' do
         )
       end
 
+      it 'returns [] when it finds nothing (no name)' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var c = function(n) { n.name = null; n.children.forEach(c); }; c(r);
+          return r.gather();
+        })).to eq(
+          []
+        )
+      end
+
       it 'returns all the matching nodes (depth first)' do
 
         expect(js(XEL + %{
@@ -105,6 +116,22 @@ describe 'jaabro.js' do
         expect(js(XEL + %{
           var r = Xel.parse('MUL(7,-3)', { rewrite: false });
           var ns = r.children[0].children[1].gather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.toString()); });
+          return a.join('\\n---\\n');
+        })).to eq(%{
+1 "exp" 4,1
+  1 "num" 4,1 "7"
+---
+1 "exp" 6,2
+  1 "num" 6,2 "-3"
+        }.strip)
+      end
+
+      it 'returns all the named subtrees when given undefined as name' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.children[0].children[1].gather();
           var a = []; ns.forEach(function(n) { a.push(n.toString()); });
           return a.join('\\n---\\n');
         })).to eq(%{
