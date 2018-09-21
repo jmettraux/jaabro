@@ -22,7 +22,7 @@
 // Made in Japan
 
 
-var Jaabro = { VERSION: '1.1.0' };
+var Jaabro = { VERSION: '1.1.1' };
 
 //
 // Jaabro.Input
