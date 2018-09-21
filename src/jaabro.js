@@ -478,7 +478,7 @@ Jaabro.parse = function(string, opts) {
 
   opts = opts || {};
 
-  d = parseInt(opts.debug, 10) || 0
+  d = parseInt(opts.debug, 10) || 0;
   if (d > 0) opts.rewrite = false;
   if (d > 1) opts.all = false;
   if (d > 2) opts.prune = false;
