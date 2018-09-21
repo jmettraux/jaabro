@@ -38,12 +38,15 @@ Jaabro.Input.slice = function(offset, length) {
 
 Jaabro.Input.match = function(str_or_rex) {
 
+//console.log([ this.offset, '///', arguments[1], str_or_rex ]);
   if ((typeof str_or_rex) === 'string') {
     var l = str_or_rex.length;
+//console.log([ this.slice(this.offset, 80) + '<<<', this.slice(this.offset, l) === str_or_rex ? l : -1 ]);
     return this.slice(this.offset, l) === str_or_rex ? l : -1;
   }
 
   var m = this.slice(this.offset).match(str_or_rex);
+//console.log([ this.slice(this.offset, 80) + '<<<', (m !== null && m.index == 0 ? m[0].length : -1) ]);
   return m !== null && m.index == 0 ? m[0].length : -1;
 };
 
@@ -163,7 +166,7 @@ Jaabro.str = function(name, input, str) {
   var r =
     this.makeTree(name, input, (typeof str) === 'string' ? 'str' : 'rex');
 
-  var l = input.match(str);
+  var l = input.match(str, name);
   if (l > -1) {
     r.result = 1;
     r.length = l;
