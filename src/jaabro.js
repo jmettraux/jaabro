@@ -57,10 +57,7 @@ Jaabro.Tree = {};
 
 Jaabro.Tree.prune = function() {
 
-  var cn = []; this.children.forEach(function(c) {
-    if (c.result === 1) cn.push(c);
-  });
-  this.children = cn;
+  this.children = this.children.filter(function(c) { return c.result === 1; });
 };
 
 Jaabro.Tree.string = function() {
@@ -492,7 +489,7 @@ Jaabro.parse = function(string, opts) {
   if (opts.all === false) t = this.root(this.makeInput(string, opts));
   else t = Jaabro.all(null, this.makeInput(string, opts), this.root);
 
-  if (opts.prune != false && t.result !== 1) return null;
+  if (opts.prune !== false && t.result !== 1) return null;
 
   if (t.parter === 'all') t = t.children[0];
 
