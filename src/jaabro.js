@@ -155,13 +155,76 @@ Jaabro.Tree.toString = function() {
   return depth == 0 ? string.join('') : null;
 };
 
+Jaabro.Tree._c = function(parentElt, tag, atts, text) {
+  var ss = tag.split('.');
+  var e = document.createElement(ss.shift());
+  for (var k in (atts || {})) { e.setAttribute(k, atts[k]); }
+  e.className = ss.join(' ');
+  e.textContent = text || '';
+  if (parentElt) parentElt.appendChild(e);
+  return e;
+};
+
+Jaabro.Tree.toHtml = function(parentElement) {
+
+  var div = this._c(
+    parentElement,
+    'div.jaabro-tree.jaabro-' + (this.result === 1 ? 'success' : 'failure'));
+
+  var su = this._c(div, 'div.jaabro-summary');
+  var ex = this._c(div, 'div.jaabro-extra');
+
+  var noname = this.name === null;
+  var n = noname ? '(null)' : this.name;
+
+  var s = this.string();
+  var t = this.input.slice(this.offset, 80);
+  if (t.length === 80) t = t + '&hellip';
+
+  var f = this.parser.toString().replace('return Jaabro.', '');
+  var fn = f.match(/^function ([^(]+)/)[1];
+
+  var cn = this.children.length;
+  var fcn = this.children.filter(function(c) { return c.result === 0; }).length;
+
+  // summary
+
+  var xn = noname ? '.jaabro-no-name' : '';
+  this._c(su, 'span.jaabro-name' + xn, {}, n);
+  if (n !== fn) this._c(su, 'span.jaabro-parser', {}, fn + '()');
+  this._c(su, 'span.jaabro-offlen', {}, '[' + this.offset + ',' + this.length + ']');
+  var cl = this._c(su, 'span.jaabro-children-count');
+  this._c(cl, 'span.jaabro-total-children-count', {}, 'cn' + cn);
+  this._c(cl, 'span.jaabro-failed-children-count', {}, 'fcn' + fcn);
+  var ma = this._c(su, 'span.jaabro-match');
+  this._c(ma, 'span.jaabro-dquote', {}, '"');
+  this._c(ma, 'span.jaabro-string', {}, s);
+  this._c(ma, 'span.jaabro-post-string', {}, t.slice(s.length));
+  this._c(ma, 'span.jaabro-dquote', {}, '"');
+
+  // extra
+
+  this._c(ex, 'span.jaabro-parser', {}, f);
+
+  // children
+
+  if (this.children.length > 0) {
+    var cn = this._c(div, 'div.jaabro-children');
+    this.children.forEach(function(c) { c.toHtml(cn); });
+  }
+
+  // over
+
+  return div;
+};
+
 //
 // Jaabro
 
 Jaabro.str = function(name, input, str) {
 
-  var r =
-    this.makeTree(name, input, (typeof str) === 'string' ? 'str' : 'rex');
+  var r = this.makeTree(
+    name, input, (typeof str) === 'string' ? 'str' : 'rex', Jaabro.str.caller);
 
   var l = input.match(str, name);
   if (l > -1) {
@@ -184,7 +247,7 @@ Jaabro.alt = function(name, input, parsers_) {
   var g = false; if (l === true || l === false) { ps.pop(); g = l; }
 
   var o = input.offset;
-  var r = this.makeTree(name, input, g ? 'altg' : 'alt');
+  var r = this.makeTree(name, input, g ? 'altg' : 'alt', Jaabro.alt.caller);
   var cr = null;
 
   while (true) {
@@ -259,7 +322,7 @@ Jaabro.quantify = function(parser) {
 Jaabro.seq = function(name, input, parsers_) {
 
   var o = input.offset;
-  var r = this.makeTree(name, input, 'seq');
+  var r = this.makeTree(name, input, 'seq', Jaabro.seq.caller);
   var cr = null;
 
   var ps = []; for (var i = 2, l = arguments.length; i < l; i++) {
@@ -303,7 +366,7 @@ Jaabro.rep = function(name, input, parser, min, max) {
   if (max === null || max === undefined || max < 0) max = 0;
 
   var o = input.offset;
-  var r = this.makeTree(name, input, 'rep');
+  var r = this.makeTree(name, input, 'rep', Jaabro.rep.caller);
   var count = 0;
 
   while (true) {
@@ -339,7 +402,7 @@ Jaabro.all = function(name, input, parser) {
 
   var o = input.offset;
   var l = input.string.length - o;
-  var r = this.makeTree(name, input, 'all');
+  var r = this.makeTree(name, input, 'all', Jaabro.all.caller);
 
   var cr = parser(input);
   r.children.push(cr);
@@ -360,7 +423,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
   }
 
   var o = input.offset;
-  var r = this.makeTree(name, input, j ? 'jseq' : 'eseq');
+  var r = this.makeTree(name, input, j ? 'jseq' : 'eseq', Jaabro.eseq.caller);
   r.result = 1;
   var cr = null;
 
@@ -460,7 +523,7 @@ Jaabro.makeInput = function(string, opts) {
   return i;
 };
 
-Jaabro.makeTree = function(name, input, parter) {
+Jaabro.makeTree = function(name, input, parter, parser) {
 
   var r = Object.create(Jaabro.Tree);
   r.name = name;
@@ -469,6 +532,7 @@ Jaabro.makeTree = function(name, input, parter) {
   r.offset = input.offset;
   r.length = 0;
   r.parter = parter;
+  r.parser = parser;
   r.children = [];
 
   return r;
