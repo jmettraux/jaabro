@@ -155,11 +155,11 @@ Jaabro.Tree.toString = function() {
   return depth == 0 ? string.join('') : null;
 };
 
-Jaabro.Tree._c = function(parentElt, tag, atts, text) {
+Jaabro.Tree._c = function(parentElt, tag, /*atts,*/ text) {
   var ss = tag.split('.');
   var e = document.createElement(ss.shift());
-  for (var k in (atts || {})) { e.setAttribute(k, atts[k]); }
-  e.className = ss.join(' ');
+  //for (var k in (atts || {})) { e.setAttribute(k, atts[k]); }
+  e.className = ss.map(function(c) { return 'jaabro' + c; }).join(' ');
   e.textContent = text || '';
   if (parentElt) parentElt.appendChild(e);
   return e;
@@ -168,11 +168,10 @@ Jaabro.Tree._c = function(parentElt, tag, atts, text) {
 Jaabro.Tree.toHtml = function(parentElement) {
 
   var div = this._c(
-    parentElement,
-    'div.jaabro-tree.jaabro-' + (this.result === 1 ? 'success' : 'failure'));
+    parentElement, 'div.-tree.-' + (this.result === 1 ? 'success' : 'failure'));
 
-  var su = this._c(div, 'div.jaabro-summary');
-  var ex = this._c(div, 'div.jaabro-extra');
+  var su = this._c(div, 'div.-summary');
+  var ex = this._c(div, 'div.-extra');
 
   var noname = this.name === null;
   var n = noname ? '(null)' : this.name;
@@ -191,27 +190,27 @@ Jaabro.Tree.toHtml = function(parentElement) {
 
   // summary
 
-  var xn = noname ? '.jaabro-no-name' : '';
-  this._c(su, 'span.jaabro-name' + xn, {}, n);
-  if (n !== fn) this._c(su, 'span.jaabro-parser', {}, fn + '()');
-  this._c(su, 'span.jaabro-offlen', {}, '[' + this.offset + ',' + this.length + ']');
-  var cl = this._c(su, 'span.jaabro-children-count');
-  this._c(cl, 'span.jaabro-total-children-count', {}, 'cn' + cn);
-  this._c(cl, 'span.jaabro-failed-children-count', {}, 'fcn' + fcn);
-  var ma = this._c(su, 'span.jaabro-match');
-  this._c(ma, 'span.jaabro-dquote', {}, '"');
-  this._c(ma, 'span.jaabro-string', {}, s);
-  this._c(ma, 'span.jaabro-post-string', {}, t.slice(s.length));
-  this._c(ma, 'span.jaabro-dquote', {}, '"');
+  var xn = noname ? '.-no-name' : '';
+  this._c(su, 'span.-name' + xn, n);
+  if (n !== fn) this._c(su, 'span.-parser', fn + '()');
+  this._c(su, 'span.-offlen', '[' + this.offset + ',' + this.length + ']');
+  var cl = this._c(su, 'span.-children-count');
+  this._c(cl, 'span.-total-children-count', 'cn' + cn);
+  this._c(cl, 'span.-failed-children-count', 'fcn' + fcn);
+  var ma = this._c(su, 'span.-match');
+  this._c(ma, 'span.-dquote', '"');
+  this._c(ma, 'span.-string', s);
+  this._c(ma, 'span.-post-string', t.slice(s.length));
+  this._c(ma, 'span.-dquote', '"');
 
   // extra
 
-  this._c(ex, 'span.jaabro-parser', {}, f);
+  this._c(ex, 'span.-parser', f);
 
   // children
 
   if (this.children.length > 0) {
-    var cn = this._c(div, 'div.jaabro-children');
+    var cn = this._c(div, 'div.-children');
     this.children.forEach(function(c) { c.toHtml(cn); });
   }
 
