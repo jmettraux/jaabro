@@ -177,8 +177,10 @@ Jaabro.Tree.toHtml = function(parentElement) {
   var noname = this.name === null;
   var n = noname ? '(null)' : this.name;
 
-  var s = this.string();
-  var t = this.input.slice(this.offset, 80);
+  var s = this.string()
+    .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
+  var t = this.input.slice(this.offset, 80)
+    .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
   if (t.length === 80) t = t + '&hellip';
 
   var f = this.parser.toString().replace('return Jaabro.', '');

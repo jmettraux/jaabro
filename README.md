@@ -267,6 +267,12 @@ var MyParser = Jaabro.makeParser(function() {
 });
 ```
 
+## testing the parser
+
+The [saintmarc](https://github.com/jmettraux/saintmarc) markdown parser has a [test.html](https://github.com/jmettraux/saintmarc/blob/master/spec/test.html) that tests the parser directly in a browser and uses `Jaabro.Tree.toHtml()` to provide a browsable debug output tree.
+
+It is very helpful to explore the parser in the early development stages. Then it's plain [specs](https://github.com/jmettraux/saintmarc/tree/master/spec).
+
 
 ## LICENSE
 
