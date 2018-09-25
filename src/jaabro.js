@@ -180,7 +180,7 @@ Jaabro.Tree.toHtml = function(parentElement) {
     .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
   var t = this.input.slice(this.offset, 80)
     .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
-  if (t.length === 80) t = t + '&hellip';
+  if (t.length === 80) t = t + '\u2026';
 
   var f = this.parser.toString().replace('return Jaabro.', '');
   var fn = f.match(/^function ([^(]+)/)[1];
