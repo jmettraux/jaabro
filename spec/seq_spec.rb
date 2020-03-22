@@ -220,6 +220,25 @@ describe 'jaabro.js' do
         )
       end
     end
+
+#    describe 'the exclamation mark' do
+#
+#      it 'works' do
+#
+#        r =js(%q{
+#
+#          function line(i) {
+#            return Jaabro.seq('li', i, lt, '!<', cha, '+', eol); }
+#
+#          var i = Jaabro.makeInput('tato\n<to\n');
+#          var r = Jaabro.rep('lis', i, line, 1);
+#
+#          //return r;
+#          return r.toArray({ leaves: true });
+#        })
+#pp r
+#      end
+#    end
   end
 end
 
