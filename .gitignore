@@ -4,7 +4,6 @@
 .bxsinfo.yaml
 .errors
 .rspec.out
-.viminfo
-.vimrc
+.vim*
 pkg/
 
