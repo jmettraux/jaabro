@@ -1,5 +1,5 @@
 
-// Copyright (c) 2015-2018, John Mettraux, jmettraux@gmail.com
+// Copyright (c) 2015-2020, John Mettraux, jmettraux@gmail.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -397,6 +397,23 @@ Jaabro.ren = function(name, input, parser) {
   cr.name = name;
 
   return cr;
+};
+
+Jaabro.nott = function(name, input, parser) {
+
+  var o = input.offset;
+
+  var r = this.makeTree(name, input, 'nott', Jaabro.nott.caller);
+
+  var cr = parser(input);
+  r.children.push(cr);
+
+  r.length = 0;
+  r.result = cr.result == 1 ? 0 : 1;
+
+  input.offset = o;
+
+  return r;
 };
 
 Jaabro.all = function(name, input, parser) {
