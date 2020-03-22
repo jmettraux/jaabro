@@ -67,6 +67,16 @@ describe 'jaabro.js' do
           })
         }.to raise_error(ExecJS::ProgramError, 'Error: lonely quantifier qmark')
       end
+
+      it 'throws an error' do
+
+        expect {
+          js(%{
+            var i = Jaabro.makeInput('something');
+            return Jaabro.seq('n0', i, '?');
+          })
+        }.to raise_error(ExecJS::ProgramError, 'Error: lonely quantifier qmark')
+      end
     end
 
     describe 'the question mark quantifier' do
@@ -220,25 +230,6 @@ describe 'jaabro.js' do
         )
       end
     end
-
-#    describe 'the exclamation mark' do
-#
-#      it 'works' do
-#
-#        r =js(%q{
-#
-#          function line(i) {
-#            return Jaabro.seq('li', i, lt, '!<', cha, '+', eol); }
-#
-#          var i = Jaabro.makeInput('tato\n<to\n');
-#          var r = Jaabro.rep('lis', i, line, 1);
-#
-#          //return r;
-#          return r.toArray({ leaves: true });
-#        })
-#pp r
-#      end
-#    end
   end
 end
 

@@ -333,9 +333,11 @@ Jaabro.seq = function(name, input, parsers_) {
   while (true) {
 
     var p = ps.shift(); if ( ! p) break;
-    if (this.toQuantifier(p)) throw new Error('lonely quantifier ' + p.jname);
 
-    var q = this.quantify(ps[0]);
+    var q = this.toQuantifier(p);
+    if (q) throw new Error('lonely quantifier ' + q.jname);
+
+    q = this.quantify(ps[0]);
 
     if (q) {
       ps.shift();
