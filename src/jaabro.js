@@ -298,19 +298,19 @@ Jaabro.altg = function(name, input, parsers_) {
 Jaabro.qmark = function() { return [ 0, 1 ]; };
 Jaabro.star = function() { return [ 0, 0 ]; };
 Jaabro.plus = function() { return [ 1, 0 ]; };
-Jaabro.qmark.jname = 'qmark';
-Jaabro.qmark.quantifier = true;
-Jaabro.star.jname = 'star';
-Jaabro.star.quantifier = true;
-Jaabro.plus.jname = 'plus';
-Jaabro.plus.quantifier = true;
+Jaabro.bang = function() { return -1; };
+Jaabro.qmark.quantifier_name = 'qmark';
+Jaabro.star.quantifier_name = 'star';
+Jaabro.plus.quantifier_name = 'plus';
+Jaabro.bang.quantifier_name = 'bang';
 
 Jaabro.toQuantifier = function(parser) {
 
   if (parser === '?') return this.qmark;
   if (parser === '*') return this.star;
   if (parser === '+') return this.plus;
-  if (parser && parser.quantifier) return parser;
+  if (parser === '!') return this.bang;
+  if (parser && parser.quantifier_name) return parser;
   return null;
 };
 
@@ -335,11 +335,16 @@ Jaabro.seq = function(name, input, parsers_) {
     var p = ps.shift(); if ( ! p) break;
 
     var q = this.toQuantifier(p);
-    if (q) throw new Error('lonely quantifier ' + q.jname);
+    if (q) throw new Error("lonely quantifier '" + q.quantifier_name + "'");
 
     q = this.quantify(ps[0]);
 
-    if (q) {
+    if (q === -1) {
+      ps.shift();
+      cr = this.nott(null, input, p);
+      r.children.push(cr);
+    }
+    else if (q) {
       ps.shift();
       cr = this.rep(null, input, p, q[0], q[1]);
       r.children = r.children.concat(cr.children);

@@ -65,7 +65,9 @@ describe 'jaabro.js' do
             var i = Jaabro.makeInput('something');
             return Jaabro.seq('n0', i, Jaabro.qmark);
           })
-        }.to raise_error(ExecJS::ProgramError, 'Error: lonely quantifier qmark')
+        }.to raise_error(
+          ExecJS::ProgramError, "Error: lonely quantifier 'qmark'"
+        )
       end
 
       it 'throws an error' do
@@ -75,7 +77,9 @@ describe 'jaabro.js' do
             var i = Jaabro.makeInput('something');
             return Jaabro.seq('n0', i, '?');
           })
-        }.to raise_error(ExecJS::ProgramError, 'Error: lonely quantifier qmark')
+        }.to raise_error(
+          ExecJS::ProgramError, "Error: lonely quantifier 'qmark'"
+        )
       end
     end
 
@@ -228,6 +232,105 @@ describe 'jaabro.js' do
             0
           ]
         )
+      end
+    end
+
+    describe 'the exclamation mark' do
+
+      it 'throws an error when lonely' do
+
+        expect {
+          js(%{
+            var i = Jaabro.makeInput('something');
+            return Jaabro.seq('n0', i, '!');
+          })
+        }.to raise_error(
+          ExecJS::ProgramError, "Error: lonely quantifier 'bang'"
+        )
+      end
+
+      it 'hits post' do
+
+        r =
+          js(%q{
+
+            var i = Jaabro.makeInput('tatu');
+            var r = Jaabro.seq('seq0', i, ta, ta, '!');
+
+            return [ r.toArray({ leaves: true }), r.string(), i.offset ];
+          })
+
+        expect(r).to eq([
+          [ 'seq0', 1, 0, 2, 'seq', [
+            [ nil, 1, 0, 2, 'str', 'ta' ],
+            [ nil, 1, 2, 0, 'nott', [
+              [ nil, 0, 2, 0, 'str', [] ] ] ] ] ],
+          'ta',
+          2
+        ])
+      end
+
+      it 'misses post' do
+
+        r =
+          js(%q{
+
+            var i = Jaabro.makeInput('tata');
+            var r = Jaabro.seq('seq0', i, ta, ta, '!');
+
+            return [ r.toArray({ leaves: true }), r.string(), i.offset ];
+          })
+
+        expect(r).to eq([
+          [ 'seq0', 0, 0, 0, 'seq', [
+            [ nil, 1, 0, 2, 'str', 'ta' ],
+            [ nil, 0, 2, 0, 'nott', [
+              [ nil, 1, 2, 2, 'str', 'ta' ] ] ] ] ],
+          '',
+          0
+        ])
+      end
+
+      it 'hits pre' do
+
+        r =
+          js(%q{
+
+            var i = Jaabro.makeInput('tatu');
+            var r = Jaabro.seq('seq0', i, tu, '!', ta, tu);
+
+            return [ r.toArray({ leaves: true }), r.string(), i.offset ];
+          })
+
+        expect(r).to eq([
+          [ 'seq0', 1, 0, 4, 'seq', [
+            [ nil, 1, 0, 0, 'nott', [
+              [ nil, 0, 0, 0, 'str', [] ] ] ],
+            [ nil, 1, 0, 2, 'str', 'ta' ],
+            [ nil, 1, 2, 2, 'str', 'tu' ] ] ],
+          'tatu',
+          4
+        ])
+      end
+
+      it 'misses pre' do
+
+        r =
+          js(%q{
+
+            var i = Jaabro.makeInput('tutu');
+            var r = Jaabro.seq('seq0', i, tu, '!', ta, tu);
+
+            return [ r.toArray({ leaves: true }), r.string(), i.offset ];
+          })
+
+        expect(r).to eq([
+          [ 'seq0', 0, 0, 0, 'seq', [
+            [ nil, 0, 0, 0, 'nott', [
+              [ nil, 1, 0, 2, 'str', 'tu' ] ] ] ] ],
+          '',
+          0
+        ])
       end
     end
   end
