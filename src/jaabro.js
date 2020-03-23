@@ -183,7 +183,8 @@ Jaabro.Tree.toHtml = function(parentElement) {
   if (t.length === 80) t = t + '\u2026';
 
   var f = this.parser.toString().replace('return Jaabro.', '');
-  var fn = f.match(/^function ([^(]+)/)[1];
+  var fm = f.match(/^function ([^(]+)/);
+  var fn = fm ? fm[1] : '(core parser)';
 
   var cn = this.children.length;
   var fcn = this.children.filter(function(c) { return c.result === 0; }).length;
