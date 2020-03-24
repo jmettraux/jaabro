@@ -1,6 +1,6 @@
 
 N:=jaabro
-GITHUB:=https://github.com/jmettraux/$(N)
+LICENSE:=https://github.com/jmettraux/$(N)/LICENSE.txt
 
 VERSION:=$(shell grep VERSION src/$(N).js | ruby -e "puts gets.match(/VERSION: '([\d\.]+)/)[1]")
 
@@ -23,7 +23,7 @@ pkg_plain:
 
 pkg_mini:
 	mkdir -p pkg
-	printf "/* $(N)-$(VERSION).min.js | MIT license: $(GITHUB)/LICENSE.txt */" > pkg/$(N)-$(VERSION).min.js
+	printf "/* $(N)-$(VERSION).min.js | MIT license: $(LICENSE) */" > pkg/$(N)-$(VERSION).min.js
 	#cat src/$(N).js | jsmin >> pkg/$(N)-$(VERSION).min.js
 	java -jar tools/closure-compiler.jar --js src/$(N).js >> pkg/$(N)-$(VERSION).min.js
 	echo "/* minified from commit $(SHA) on $(NOW) */" >> pkg/$(N)-$(VERSION).min.js
@@ -31,7 +31,7 @@ pkg_mini:
 
 pkg_comp:
 	mkdir -p pkg
-	printf "/* $(N)-$(VERSION).com.js | MIT license: $(GITHUB)/LICENSE.txt */\n" > pkg/$(N)-$(VERSION).com.js
+	printf "/* $(N)-$(VERSION).com.js | MIT license: $(LICENSE) */\n" > pkg/$(N)-$(VERSION).com.js
 	cat src/$(N).js | ruby tools/compactor.rb >> pkg/$(N)-$(VERSION).com.js
 	echo "\n/* compacted from commit $(SHA) on $(NOW) */" >> pkg/$(N)-$(VERSION).com.js
 	cp pkg/$(N)-$(VERSION).com.js pkg/$(N)-$(VERSION)-$(SHA).com.js
@@ -39,5 +39,11 @@ pkg_comp:
 pkg: pkg_plain pkg_mini pkg_comp
 
 
-.PHONY: spec pkg
+clean-sha:
+	find pkg -name "$(N)-*-*js" | xargs rm
+clean:
+	rm -fR pkg/
+
+
+.PHONY: spec pkg clean-sha clean
 
