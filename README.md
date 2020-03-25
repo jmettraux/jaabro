@@ -179,35 +179,52 @@ function eseq(name, input, startpa, eltpa, seppa, endpa)
   //
   // a sequence of `eltpa` parsers separated (joined) by `seppa` parsers
   // preceded by a `startpa` parser and followed by a `endpa` parser
+
+function nott(name, input, parser)
+  // tries the given parser and succeeds if that parser fails, a kind of "not"
 ```
 
 ## the `seq` parser and its quantifiers
 
 `seq` is special, it understands "quantifiers": `'?'`, `'+'` or `'*'`. They make behave `seq` a bit like a classical regex.
 
+There is a `'!'` quantifier which is documented at the end of this section.
+
 ```javascript
 var CartParser = Jaabro.makeParser(function() {
 
-  function pa(i) { return rex(null, i, /\(\s*/); }
+  function pa(i) {
+    return rex(null, i, /\(\s*/); }
 
   function fruit(i) {
-    return rex('fruit', i, /(tomato|apple|orange)/);
-  }
+    return rex('fruit', i, /(tomato|apple|orange)/); }
   function vegetable(i) {
-    return rex('vegetable', i, /(potato|cabbage|carrot)/);
-  }
+    return rex('vegetable', i, /(potato|cabbage|carrot)/); }
 
   function cart(i) {
-    return seq('cart', i, fruit, '*', vegetable, '*');
-  }
-    // zero or more fruits followed by zero or more vegetables
-end
+    return seq('cart', i, fruit, '*', vegetable, '*'); }
+      // zero or more fruits followed by zero or more vegetables
+});
 ```
 
 (Yes, this sample parser parses string like "appletomatocabbage", it's not very useful, but I hope you get the point about `seq`)
 
+The `'!'` quantifier is a `nott()` in disguise (like `'?'`, `'+'`, and `'*'` are `rep()` in disguise.
 
-## "classes"
+```javascript
+  function paraline(i) {
+    return seq('paraline', i, listli_head, '!', inline, eol); }
+
+  // is equivalent to
+
+  function not_listli_head(i) {
+    return nott(null, i, listli_head); }
+  function paraline(i) {
+    return seq('paraline', i, not_listli_head, inline, eol); }
+```
+
+
+## "classes" (as in object class)
 
 Basically, one only has to know about `Jaabro.Node`. It's the input to any `rewrite` method.
 
