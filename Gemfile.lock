@@ -2,7 +2,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    execjs (2.6.0)
+    execjs (2.7.0)
+    libv8 (7.3.492.27.1)
+    mini_racer (0.2.9)
+      libv8 (>= 6.9.411)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -22,7 +25,8 @@ PLATFORMS
 
 DEPENDENCIES
   execjs
+  mini_racer
   rspec
 
 BUNDLED WITH
-   1.10.6
+   1.17.2
