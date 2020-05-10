@@ -2,6 +2,9 @@
 # jaabro
 
 
+## jaabro 1.3.0 not yet released
+
+
 ## jaabro 1.2.0 released 2020-03-25
 
 * Introduce nott() and seq()'s '!'
