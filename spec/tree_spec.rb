@@ -178,6 +178,19 @@ describe 'jaabro.js' do
         }.strip)
       end
     end
+
+    describe '.string()' do
+
+      it 'returns the string covered by the tree' do
+
+        expect(js(XEL + %{
+          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+          var ns = r.children[0].subgather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.string()); });
+          return a;
+        })).to eq([ '7', '-3' ])
+      end
+    end
   end
 end
 
