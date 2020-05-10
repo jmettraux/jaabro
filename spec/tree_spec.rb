@@ -204,6 +204,19 @@ describe 'jaabro.js' do
         })).to eq([ '7', '-3' ])
       end
     end
+
+    describe '.strim()' do
+
+      it 'returns the string covered by the tree, but trimmed' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL(7, -3)', { rewrite: false });
+          var ns = r.children[0].subgather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.strim()); });
+          return a;
+        })).to eq([ '7', '-3' ])
+      end
+    end
   end
 end
 

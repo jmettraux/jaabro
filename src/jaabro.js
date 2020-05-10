@@ -69,6 +69,7 @@ Jaabro.Tree.strinp = function() {
 
   return this.input.slice(this.offset, this.length).trim();
 };
+Jaabro.Tree.strim = Jaabro.Tree.strinp;
 
 Jaabro.Tree.lookup = function(name) {
 

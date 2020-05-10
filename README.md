@@ -257,6 +257,7 @@ This "class" understands the following methods:
 * `toString()`: returns a string representation of the node and its children
 * `string()`: returns the string matched by the result node
 * `strinp()`: returns the string matched by the result node, but trimmed
+* `strim()`: alias to `strinp()`
 * `lookup(name)`: returns the first node with the given name (might return "this" node)
 * `gather(name)`: returns all the nodes with the given name (starting with "this" node)
 
