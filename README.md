@@ -86,7 +86,8 @@ var Xelp = Jaabro.makeParser(function() {
       if (mod) v.push(mod)
       a.push(v);
       c = cn.shift(); if ( ! c) break;
-      mod = { '-': 'opp', '/': 'inv' }[c.string().trim()];
+      //mod = { '-': 'opp', '/': 'inv' }[c.string().trim()];
+      mod = { '-': 'opp', '/': 'inv' }[c.strinp()];
     }
 
     return a;
@@ -95,7 +96,8 @@ var Xelp = Jaabro.makeParser(function() {
 
   function rewrite_fun(t) {
 
-    var a = [ t.children[0].string() ];
+    //var a = [ t.children[0].string() ];
+    var a = [ t.children[0].strinp() ];
     t.children[1].children.forEach(function(c) {
       if (c.name) a.push(rewrite(c));
     });
@@ -107,12 +109,15 @@ var Xelp = Jaabro.makeParser(function() {
 
   function rewrite_par(t) { return rewrite(t.children[1]); }
 
-  function rewrite_var(t) { return [ 'var', t.string().trim() ]; }
-  function rewrite_number(t) { return [ 'num', t.string().trim() ]; }
+  //function rewrite_var(t) { return [ 'var', t.string().trim() ]; }
+  //function rewrite_number(t) { return [ 'num', t.string().trim() ]; }
+  function rewrite_var(t) { return [ 'var', t.strinp() ]; }
+  function rewrite_number(t) { return [ 'num', t.strinp() ]; }
 
   function rewrite_string(t) {
 
-    var s = t.children[0].string().trim();
+    //var s = t.children[0].string().trim();
+    var s = t.children[0].strinp();
     var q = s[0];
     var s = s.slice(1, -1);
 
@@ -251,6 +256,7 @@ This "class" understands the following methods:
 * `toArray()`: returns an array representation of the node and its children
 * `toString()`: returns a string representation of the node and its children
 * `string()`: returns the string matched by the result node
+* `strinp()`: returns the string matched by the result node, but trimmed
 * `lookup(name)`: returns the first node with the given name (might return "this" node)
 * `gather(name)`: returns all the nodes with the given name (starting with "this" node)
 
@@ -258,6 +264,9 @@ As seen above:
 ```js
   function rewrite_var(t) { return [ 'var', t.string().trim() ]; }
   function rewrite_number(t) { return [ 'num', t.string().trim() ]; }
+    // or
+  function rewrite_var(t) { return [ 'var', t.strinp() ]; }
+  function rewrite_number(t) { return [ 'num', t.strinp() ]; }
 ```
 The `t` is a `Jaabro.result`. The results for "var" and "num" named results get wrapped into some kind of s-expression with the result node string trimmed.
 

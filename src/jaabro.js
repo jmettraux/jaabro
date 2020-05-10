@@ -65,6 +65,11 @@ Jaabro.Tree.string = function() {
   return this.input.slice(this.offset, this.length);
 };
 
+Jaabro.Tree.strinp = function() {
+
+  return this.input.slice(this.offset, this.length).trim();
+};
+
 Jaabro.Tree.lookup = function(name) {
 
   if (name === null) { if (this.name) return this; }

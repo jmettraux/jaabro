@@ -183,10 +183,23 @@ describe 'jaabro.js' do
 
       it 'returns the string covered by the tree' do
 
-        expect(js(XEL + %{
-          var r = Xel.parse('MUL(7,-3)', { rewrite: false });
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL(7, -3)', { rewrite: false });
           var ns = r.children[0].subgather(null);
           var a = []; ns.forEach(function(n) { a.push(n.string()); });
+          return a;
+        })).to eq([ '7', ' -3' ])
+      end
+    end
+
+    describe '.strinp()' do
+
+      it 'returns the string covered by the tree, but trimmed' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL(7, -3)', { rewrite: false });
+          var ns = r.children[0].subgather(null);
+          var a = []; ns.forEach(function(n) { a.push(n.strinp()); });
           return a;
         })).to eq([ '7', '-3' ])
       end

@@ -15,11 +15,11 @@ XELL =
       //
       // parse
 
-      function pa(i) { return str(null, i, '('); }
-      function pz(i) { return str(null, i, ')'); }
+      function pa(i) { return rex(null, i, /\\(\\s*/); }
+      function pz(i) { return rex(null, i, /\\s*\\)/); }
       function com(i) { return str(null, i, ','); }
 
-      function num(i) { return rex('num', i, /-?[0-9]+/); }
+      function num(i) { return rex('num', i, /\\s*-?[0-9]+\\s*/); }
 
       function args(i) { return eseq(null, i, pa, exp, com, pz); }
       function funame(i) { return rex(null, i, /[A-Z][A-Z0-9]*/); }
