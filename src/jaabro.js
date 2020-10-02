@@ -483,6 +483,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
       count = count + 1;
     }
 
+    if (count % 2 != 1) r.result = 0;
     if (j && count < 1) r.result = 0;
   }
 
