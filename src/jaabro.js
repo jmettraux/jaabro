@@ -46,8 +46,8 @@ Jaabro.Input.match = function(str_or_rex) {
   }
 
   var m = this.slice(this.offset).match(str_or_rex);
-//console.log([ this.slice(this.offset, 80) + '<<<', (m !== null && m.index == 0 ? m[0].length : -1) ]);
-  return m !== null && m.index == 0 ? m[0].length : -1;
+//console.log([ this.slice(this.offset, 80) + '<<<', (m !== null && m.index === 0 ? m[0].length : -1) ]);
+  return m !== null && m.index === 0 ? m[0].length : -1;
 };
 
 //
@@ -162,7 +162,7 @@ Jaabro.Tree.toString = function() {
 
   this.children.forEach(function(c) { c.toString(depth + 1, string); });
 
-  return depth == 0 ? string.join('') : null;
+  return depth === 0 ? string.join('') : null;
 };
 
 Jaabro.Tree._c = function(parentElt, tag, /*atts,*/ text) {
@@ -427,7 +427,7 @@ Jaabro.nott = function(name, input, parser) {
   r.children.push(cr);
 
   r.length = 0;
-  r.result = cr.result == 1 ? 0 : 1;
+  r.result = cr.result === 1 ? 0 : 1;
 
   input.offset = o;
 
@@ -477,17 +477,24 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
     while (true) {
 
       i = (i + 1) % 2;
-      var p = i == 0 ? eltp : sepp;
 
-      cr = p(input);
+      cr = (i === 0 ? eltp : sepp)(input);
+
       r.children.push(cr);
 
-      if (cr.result !== 1) break;
+      //if (cr.result !== 1) break;
+      if (cr.result !== 1) {
+        if (i === 0 && count > 0) {
+          var lsep = r.children[r.children.length - 2];
+          lsep.result = 0;
+          input.offset = lsep.offset;
+        }
+        break;
+      }
 
       count = count + 1;
     }
 
-    if ((count > 0) && (count % 2 != 1)) r.result = 0;
     if (j && count < 1) r.result = 0;
   }
 
@@ -497,7 +504,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
     if (cr.result !== 1) r.result = 0;
   }
 
-  if (r.result == 1) r.length = input.offset - o;
+  if (r.result === 1) r.length = input.offset - o;
   else input.offset = o;
 
   if (input.options.prune) r.prune();

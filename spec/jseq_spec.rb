@@ -75,7 +75,7 @@ describe 'jaabro.js' do
       )
     end
 
-    it 'refuses trailing separators' do
+    it 'does not include trailing separators' do
 
       expect(js(%{
 
@@ -85,13 +85,13 @@ describe 'jaabro.js' do
         return [ r.toArray({ leaves: true }), i.offset ];
       })).to eq(
         [
-          ["j", 0, 0, 0, "jseq", [
+          ["j", 1, 0, 3, "jseq", [
             [nil, 1, 0, 1, "rex", "a"],
             [nil, 1, 1, 1, "str", ","],
             [nil, 1, 2, 1, "rex", "b"],
-            [nil, 1, 3, 1, "str", ","],
+            [nil, 0, 3, 1, "str", []],
             [nil, 0, 4, 0, "rex", []]]],
-          0
+          3
         ]
       )
     end
