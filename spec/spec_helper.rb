@@ -71,6 +71,45 @@ XEL =
     });
   }
 
+XELL =
+  %{
+    var Xell = Jaabro.make(function() {
+
+      //
+      // parse
+
+      function pa(i) { return rex(null, i, /\\(\\s*/); }
+      function pz(i) { return rex(null, i, /\\s*\\)/); }
+      function com(i) { return str(null, i, ','); }
+
+      function num(i) { return rex('num', i, /\\s*-?[0-9]+\\s*/); }
+
+      function args(i) { return eseq(null, i, pa, exp, com, pz); }
+      function funame(i) { return rex(null, i, /[A-Z][A-Z0-9]* */); }
+      function fun(i) { return seq('fun', i, funame, args); }
+
+      function exp(i) { return alt(null, i, fun, num); }
+
+      var root = exp;
+
+      //
+      // rewrite
+
+      function rewrite_num(t) {
+        return parseInt(t.string(), 10);
+      }
+
+      function rewrite_fun(t) {
+        var a = [];
+        a.push(t.children[0].string());
+        t.children[1].oddChildren().forEach(
+          function(c) { a.push(rewrite(c)); });
+        return a;
+      }
+    });
+  }
+
+
 module Helpers
 
   def js(s)

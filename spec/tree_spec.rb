@@ -217,6 +217,50 @@ describe 'jaabro.js' do
         })).to eq([ '7', '-3' ])
       end
     end
+
+    describe '.stringd()' do
+
+      it 'returns the string covered by the tree, but downcased' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL(7, -3)', { rewrite: false });
+          return r.children[0].children[0].stringd();
+        })).to eq('mul')
+      end
+    end
+
+    describe '.strind()' do
+
+      it 'returns the string covered by the tree, but downcased' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL (7, -3)', { rewrite: false });
+          return r.children[0].children[0].strind();
+        })).to eq('mul ')
+      end
+    end
+
+    describe '.stringpd()' do
+
+      it 'returns the string covered by the tree, but downcased and trimmed' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL (7, -3)', { rewrite: false });
+          return r.children[0].children[0].stringpd();
+        })).to eq('mul')
+      end
+    end
+
+    describe '.strinpd()' do
+
+      it 'returns the string covered by the tree, but downcased and trimmed' do
+
+        expect(js(XELL + %{
+          var r = Xell.parse('MUL (7, -3)', { rewrite: false });
+          return r.children[0].children[0].strinpd();
+        })).to eq('mul')
+      end
+    end
   end
 end
 

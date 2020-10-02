@@ -61,15 +61,19 @@ Jaabro.Tree.prune = function() {
 };
 
 Jaabro.Tree.string = function() {
-
-  return this.input.slice(this.offset, this.length);
-};
+  return this.input.slice(this.offset, this.length); };
 
 Jaabro.Tree.strinp = function() {
-
-  return this.input.slice(this.offset, this.length).trim();
-};
+  return this.input.slice(this.offset, this.length).trim(); };
 Jaabro.Tree.strim = Jaabro.Tree.strinp;
+
+Jaabro.Tree.stringd = function() {
+  return this.input.slice(this.offset, this.length).toLowerCase(); }
+Jaabro.Tree.strind = Jaabro.Tree.stringd;
+
+Jaabro.Tree.stringpd = function() {
+  return this.input.slice(this.offset, this.length).trim().toLowerCase(); }
+Jaabro.Tree.strinpd = Jaabro.Tree.stringpd;
 
 Jaabro.Tree.lookup = function(name) {
 
