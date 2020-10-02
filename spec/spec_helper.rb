@@ -6,7 +6,7 @@
 #
 
 require 'pp'
-require 'execjs'
+require 'ferrum'
 
 
 JAABRO_SOURCE =
@@ -75,7 +75,15 @@ module Helpers
 
   def js(s)
 
-    ExecJS.compile(JAABRO_SOURCE).exec(s)
+    $browser ||=
+      begin
+        Ferrum::Browser.new(js_errors: true)
+      end
+
+    s = "JSON.stringify((function() { #{JAABRO_SOURCE}; #{s}; })())"
+    j = $browser.evaluate(s)
+
+    JSON.parse(j)
   end
 end
 RSpec.configure { |c| c.include(Helpers) }

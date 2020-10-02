@@ -66,7 +66,7 @@ describe 'jaabro.js' do
             return Jaabro.seq('n0', i, Jaabro.qmark);
           })
         }.to raise_error(
-          ExecJS::ProgramError, "Error: lonely quantifier 'qmark'"
+          Ferrum::JavaScriptError, /Error: lonely quantifier 'qmark'/
         )
       end
 
@@ -78,7 +78,7 @@ describe 'jaabro.js' do
             return Jaabro.seq('n0', i, '?');
           })
         }.to raise_error(
-          ExecJS::ProgramError, "Error: lonely quantifier 'qmark'"
+          Ferrum::JavaScriptError, /Error: lonely quantifier 'qmark'/
         )
       end
     end
@@ -245,7 +245,7 @@ describe 'jaabro.js' do
             return Jaabro.seq('n0', i, '!');
           })
         }.to raise_error(
-          ExecJS::ProgramError, "Error: lonely quantifier 'bang'"
+          Ferrum::JavaScriptError, /Error: lonely quantifier 'bang'/
         )
       end
 
