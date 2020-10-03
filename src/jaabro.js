@@ -393,6 +393,7 @@ Jaabro.rep = function(name, input, parser, min, max) {
     r.children.push(cr);
     if (cr.result !== 1) break;
     count = count + 1;
+    if (cr.length < 1) break;
     if (max > 0 && count === max) break;
   }
 

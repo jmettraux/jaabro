@@ -189,6 +189,22 @@ describe 'jaabro.js' do
           ]
         )
       end
+
+      it 'stops when there is no progress' do
+
+        expect(js(%{
+
+          var i = Jaabro.makeInput('abc');
+          var r = Jaabro.seq(null, i, to_star, '*');
+
+          return [ r.toArray({ leaves: true }), i.offset ];
+        })).to eq([
+          [nil, 1, 0, 0, "seq", [
+            ["tos", 1, 0, 0, "rep", [
+              [nil, 0, 0, 0, "str", []]]]]],
+          0
+        ])
+      end
     end
 
     describe 'the plus quantifier' do
@@ -232,6 +248,21 @@ describe 'jaabro.js' do
             0
           ]
         )
+      end
+
+      it 'stops when there is no progress' do
+
+#        i = Raabro::Input.new('abc')
+#
+#        t = Raabro.seq(nil, i, :to_star, '+');
+#
+#        expect(t.to_a(:leaves => true)).to eq(
+#          [ nil, 1, 0, 0, nil, :seq, [
+#            [ nil, 1, 0, 0, nil, :rep, [
+#              [ nil, 0, 0, 0, nil, :str, [] ]
+#            ] ]
+#          ] ]
+#        )
       end
     end
 
