@@ -474,6 +474,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 
     var i = 1;
     var count = 0;
+    var emptyStack = 0;
 
     while (true) {
 
@@ -481,9 +482,13 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 
       cr = (i === 0 ? eltp : sepp)(input);
 
+      emptyStack = cr.length == 0 ? emptyStack + 1 : 0;
+      if (emptyStack > 1) cr.result = 0;
+        //
+        // prevent no progress
+
       r.children.push(cr);
 
-      //if (cr.result !== 1) break;
       if (cr.result !== 1) {
         if (i === 0 && count > 0) {
           var lsep = r.children[r.children.length - 2];

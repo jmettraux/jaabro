@@ -31,6 +31,10 @@ JAABRO_SOURCE =
     var onex = function(i) { return Jaabro.str('onex', i, 'x'); };
     var twox = function(i) { return Jaabro.str('twox', i, 'xx'); };
     var deux = function(i) { return Jaabro.str('deux', i, 'xx'); };
+
+    var acom = function(i) { return Jaabro.rex(null, i, /,?/); };
+    var aval = function(i) { return Jaabro.rex(null, i, /[a-z]?/); };
+    var arr = function(i) { return Jaabro.eseq(null, i, lt, aval, acom, gt); };
   }
 
 XEL =

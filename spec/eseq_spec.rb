@@ -147,6 +147,47 @@ describe 'jaabro.js' do
         )
       end
     end
+
+    context 'no progress' do
+
+      it 'parses <>' do
+
+        expect(js(%{
+
+          var i = Jaabro.makeInput('<>', { prune: true });
+          var r = arr(i)
+
+          return [ r.toArray({ leaves: true }), i.offset ];
+        })).to eq([
+          [nil, 1, 0, 2, 'eseq', [
+            [nil, 1, 0, 1, 'str', '<'],
+            [nil, 1, 1, 0, 'rex', ''],
+            [nil, 1, 1, 1, 'str', '>']]],
+          2
+        ])
+      end
+
+      it 'parses <a,,a>' do
+
+        expect(js(%{
+
+          var i = Jaabro.makeInput('<a,,a>', { prune: true });
+          var r = arr(i)
+
+          return [ r.toArray({ leaves: true }), i.offset ];
+        })).to eq([
+          [nil, 1, 0, 6, 'eseq', [
+            [nil, 1, 0, 1, 'str', '<'],
+            [nil, 1, 1, 1, 'rex', 'a'],
+            [nil, 1, 2, 1, 'rex', ','],
+            [nil, 1, 3, 0, 'rex', ''],
+            [nil, 1, 3, 1, 'rex', ','],
+            [nil, 1, 4, 1, 'rex', 'a'],
+            [nil, 1, 5, 1, 'str', '>']]],
+          6
+        ])
+      end
+    end
   end
 end
 
