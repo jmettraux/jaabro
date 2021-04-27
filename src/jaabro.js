@@ -521,6 +521,11 @@ Jaabro.jseq = Jaabro.eseq;
 
 Jaabro.make = function(fun) {
 
+  //var feval = function(s) {
+  //  return Function('"use strict"; return (' + s + ')')();
+  //};
+    // no, we need the local eval...
+
   var rw_ = function(t) {
     for (var i = 0, l = t.children.length; i < l; i++) {
       var c = t.children[i];
@@ -553,7 +558,6 @@ Jaabro.make = function(fun) {
     '}';
   //print(">>>" + funs + "<<<");
 
-  //eval('fun = ' + funs);
   fun = eval('(' + funs + ')');
 
   //var rw = fun.call(p, p);
