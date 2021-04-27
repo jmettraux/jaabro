@@ -4,6 +4,8 @@
 
 ## jaabro 1.4.0 not yet released
 
+* Make sure nott() is available
+
 
 ## jaabro 1.3.0 released 2020-05-10
 

@@ -535,10 +535,12 @@ Jaabro.make = function(fun) {
   var p = Object.create(Jaabro);
 
   var funs = fun.toString();
-  'all alt altg eseq jseq ren rep rex seq str'.split(' ').forEach(function(f) {
-    funs = funs.replace(
-      new RegExp(" +" + f + "\\(", 'g'),
-      ' Jaabro.' + f + '(');
+  'all alt altg eseq jseq ren rep rex seq str nott'
+    .split(' ')
+    .forEach(function(f) {
+      funs = funs.replace(
+        new RegExp(" +" + f + "\\(", 'g'),
+        ' Jaabro.' + f + '(');
   });
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +
