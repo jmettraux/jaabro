@@ -124,8 +124,15 @@ module Helpers
         Ferrum::Browser.new(js_errors: true)
       end
 
-    s = "JSON.stringify((function() { #{JAABRO_SOURCE}; #{s}; })())"
-    j = $browser.evaluate(s)
+    s1 =
+      "JSON.stringify((function() { #{JAABRO_SOURCE}; #{s}; })())"
+    j =
+      begin
+        $browser.evaluate(s1)
+      rescue Ferrum::DeadBrowserError
+        $browser = nil
+        return js(s)
+      end
 
     JSON.parse(j)
   end
