@@ -544,8 +544,8 @@ Jaabro.make = function(fun) {
     .split(' ')
     .forEach(function(f) {
       funs = funs.replace(
-        new RegExp(" +" + f + "\\(", 'g'),
-        ' Jaabro.' + f + '(');
+        new RegExp("return +" + f + "\\(", 'g'),
+        'return Jaabro.' + f + '(');
   });
   funs =
     funs.slice(0, funs.lastIndexOf('}')) +

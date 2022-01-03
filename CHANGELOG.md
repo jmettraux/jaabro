@@ -4,6 +4,7 @@
 
 ## jaabro 1.4.0 not yet released
 
+* Ensure str/alt/... replaceAll focuses on "return"
 * Make sure nott() is available
 
 
