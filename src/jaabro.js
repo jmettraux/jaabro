@@ -106,11 +106,9 @@ Jaabro.Tree.gather = function(name) {
 
 Jaabro.Tree.subgather = function(name) {
 
-  var acc = arguments[1] || [];
-
-  this.children.forEach(function(c) { c.gather(name, acc) });
-
-  return acc;
+  return this.children.reduce(
+    function(acc, c) { return c.gather(name, acc); },
+    arguments[1] || []);
 };
 
 Jaabro.Tree.eoChildren = function(start) {
