@@ -1,12 +1,10 @@
 
-N:=jaabro
-LICENSE:=https://github.com/jmettraux/$(N)/LICENSE.txt
-
-VERSION:=$(shell grep VERSION src/$(N).js | ruby -e "puts gets.match(/VERSION: '([\d\.]+)/)[1]")
-
-#SHA:=$(shell git log -1 --format="%H")
-SHA:=$(shell git log -1 --format="%h")
-NOW:=$(shell date)
+N = jaabro
+RUBY = ruby
+VERSION != grep VERSION src/$(N).js | $(RUBY) -e "puts gets.match(/VERSION *[:=] *'([\d\.]+)/)[1]"
+SHA != git log -1 --format="%h"
+NOW != date
+LICENSE = https://github.com/jmettraux/$(N).js/LICENSE.txt
 
 
 v:
