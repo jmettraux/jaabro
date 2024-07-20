@@ -4,6 +4,8 @@
 
 ## jaabro 1.4.1 not yet released
 
+* Fix rewrite behaviour when null children, align on raabro
+
 
 ## jaabro 1.4.0 released 2024-07-20
 

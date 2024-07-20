@@ -114,6 +114,18 @@ XELL =
     });
   }
 
+SPACE_WRAPPER =
+  %{
+    var SpaceWrapper = Jaabro.makeParser(function() {
+
+      function exp(i) { return str('exp', i, 'EXP'); }
+      function prespace(i) { return rex(null, i, /\s+/); }
+      function root(i) { return seq(null, i, prespace, '?', exp); }
+
+      function rewrite_exp(t) { return t.name; }
+    });
+  }
+
 
 module Helpers
 

@@ -527,7 +527,7 @@ Jaabro.make = function(fun) {
   let rw_ = function(t) {
     for (let i = 0, l = t.children.length; i < l; i++) {
       let c = t.children[i];
-      if (c.length > 0 || c.name) return rewrite(c);
+      if (c.length > 0 && c.name) return rewrite(c);
     }
     return null;
   };
