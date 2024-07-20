@@ -519,7 +519,7 @@ Jaabro.jseq = Jaabro.eseq;
 
 Jaabro.make = function(fun) {
 
-  //var feval = function(s) {
+  //let feval = function(s) {
   //  return Function('"use strict"; return (' + s + ')')();
   //};
     // no, we need the local eval...
