@@ -56,7 +56,7 @@ XEL =
 
       function exp(i) { return alt('exp', i, fun, num); }
 
-      var root = exp;
+      let root = exp;
 
       //
       // rewrite
@@ -64,7 +64,7 @@ XEL =
       function rewrite_num(t) { return parseInt(t.string(), 10); }
 
       function rewrite_fun(t) {
-        var a = [];
+        let a = [];
         a.push(t.children[0].string());
         t.children[1].children.forEach(function(c) {
           if (c.name) a.push(rewrite(c));
@@ -95,7 +95,7 @@ XELL =
 
       function exp(i) { return alt(null, i, fun, num); }
 
-      var root = exp;
+      let root = exp;
 
       //
       // rewrite
@@ -105,7 +105,7 @@ XELL =
       }
 
       function rewrite_fun(t) {
-        var a = [];
+        let a = [];
         a.push(t.children[0].string());
         t.children[1].oddChildren().forEach(
           function(c) { a.push(rewrite(c)); });

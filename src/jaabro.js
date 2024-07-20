@@ -40,12 +40,12 @@ Jaabro.Input.match = function(str_or_rex) {
 
 //console.log([ this.offset, '///', arguments[1], str_or_rex ]);
   if ((typeof str_or_rex) === 'string') {
-    var l = str_or_rex.length;
+    let l = str_or_rex.length;
 //console.log([ this.slice(this.offset, 80) + '<<<', this.slice(this.offset, l) === str_or_rex ? l : -1 ]);
     return this.slice(this.offset, l) === str_or_rex ? l : -1;
   }
 
-  var m = this.slice(this.offset).match(str_or_rex);
+  let m = this.slice(this.offset).match(str_or_rex);
 //console.log([ this.slice(this.offset, 80) + '<<<', (m !== null && m.index === 0 ? m[0].length : -1) ]);
   return m !== null && m.index === 0 ? m[0].length : -1;
 };
@@ -84,8 +84,8 @@ Jaabro.Tree.lookup = function(name) {
 
 Jaabro.Tree.sublookup = function(name) {
 
-  for (var i = 0, l = this.children.length; i < l; i++) {
-    var r = this.children[i].lookup(name);
+  for (let i = 0, l = this.children.length; i < l; i++) {
+    let r = this.children[i].lookup(name);
     if (r) return r;
   }
   return null;
@@ -94,7 +94,7 @@ Jaabro.Tree.sublookup = function(name) {
 Jaabro.Tree.gather = function(name) {
 
   if ( ! name) name = null;
-  var acc = arguments[1] || [];
+  let acc = arguments[1] || [];
 
   if ((name === null && this.name) || (name && this.name === name))
     acc.push(this);
@@ -113,9 +113,9 @@ Jaabro.Tree.subgather = function(name) {
 
 Jaabro.Tree.eoChildren = function(start) {
 
-  var a = [];
+  let a = [];
 
-  for (var i = start, l = this.children.length; i < l; i = i + 2) {
+  for (let i = start, l = this.children.length; i < l; i = i + 2) {
     a.push(this.children[i]);
   };
 
@@ -127,14 +127,14 @@ Jaabro.Tree.evenChildren = function() { return this.eoChildren(0); };
 
 Jaabro.Tree.toArray = function(opts) {
 
-  var cn = null;
+  let cn = null;
 
   if (this.result === 1 && this.children.length === 0)
   {
     cn = this.string();
   }
   else {
-    cn = []; for (var i = 0, l = this.children.length; i < l; i++) {
+    cn = []; for (let i = 0, l = this.children.length; i < l; i++) {
       cn.push(this.children[i].toArray(opts));
     }
   }
@@ -145,11 +145,11 @@ Jaabro.Tree.toArray = function(opts) {
 
 Jaabro.Tree.toString = function() {
 
-  var depth = arguments[0] || 0;
-  var string = arguments[1] || [];
+  let depth = arguments[0] || 0;
+  let string = arguments[1] || [];
 
   if (depth > 0) string.push('\n');
-  for (var i = 0; i < depth; i++) string.push('  ');
+  for (let i = 0; i < depth; i++) string.push('  ');
 
   string.push(this.result, ' ', JSON.stringify(this.name), ' ');
   string.push(this.offset, ',', this.length);
@@ -164,9 +164,9 @@ Jaabro.Tree.toString = function() {
 };
 
 Jaabro.Tree._c = function(parentElt, tag, /*atts,*/ text) {
-  var ss = tag.split('.');
-  var e = document.createElement(ss.shift());
-  //for (var k in (atts || {})) { e.setAttribute(k, atts[k]); }
+  let ss = tag.split('.');
+  let e = document.createElement(ss.shift());
+  //for (let k in (atts || {})) { e.setAttribute(k, atts[k]); }
   e.className = ss.map(function(c) { return 'jaabro' + c; }).join(' ');
   e.textContent = text || '';
   if (parentElt) parentElt.appendChild(e);
@@ -175,38 +175,38 @@ Jaabro.Tree._c = function(parentElt, tag, /*atts,*/ text) {
 
 Jaabro.Tree.toHtml = function(parentElement) {
 
-  var div = this._c(
+  let div = this._c(
     parentElement, 'div.-tree.-' + (this.result === 1 ? 'success' : 'failure'));
 
-  var su = this._c(div, 'div.-summary');
-  var ex = this._c(div, 'div.-extra');
+  let su = this._c(div, 'div.-summary');
+  let ex = this._c(div, 'div.-extra');
 
-  var noname = this.name === null;
-  var n = noname ? '(null)' : this.name;
+  let noname = this.name === null;
+  let n = noname ? '(null)' : this.name;
 
-  var s = this.string()
+  let s = this.string()
     .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
-  var t = this.input.slice(this.offset, 80)
+  let t = this.input.slice(this.offset, 80)
     .replace(/\n/g, '\u21b3').replace(/\r/g, '\u21b2');
   if (t.length === 80) t = t + '\u2026';
 
-  var f = this.parser.toString().replace('return Jaabro.', '');
-  var fm = f.match(/^function ([^(]+)/);
-  var fn = fm ? fm[1] : '(core parser)';
+  let f = this.parser.toString().replace('return Jaabro.', '');
+  let fm = f.match(/^function ([^(]+)/);
+  let fn = fm ? fm[1] : '(core parser)';
 
-  var cn = this.children.length;
-  var fcn = this.children.filter(function(c) { return c.result === 0; }).length;
+  let cn = this.children.length;
+  let fcn = this.children.filter(function(c) { return c.result === 0; }).length;
 
   // summary
 
-  var xn = noname ? '.-no-name' : '';
+  let xn = noname ? '.-no-name' : '';
   this._c(su, 'span.-name' + xn, n);
   if (n !== fn) this._c(su, 'span.-parser', fn + '()');
   this._c(su, 'span.-offlen', '[' + this.offset + ',' + this.length + ']');
-  var cl = this._c(su, 'span.-children-count');
+  let cl = this._c(su, 'span.-children-count');
   this._c(cl, 'span.-total-children-count', 'cn' + cn);
   this._c(cl, 'span.-failed-children-count', 'fcn' + fcn);
-  var ma = this._c(su, 'span.-match');
+  let ma = this._c(su, 'span.-match');
   this._c(ma, 'span.-dquote', '"');
   this._c(ma, 'span.-string', s);
   this._c(ma, 'span.-post-string', t.slice(s.length));
@@ -219,7 +219,7 @@ Jaabro.Tree.toHtml = function(parentElement) {
   // children
 
   if (this.children.length > 0) {
-    var cn = this._c(div, 'div.-children');
+    let cn = this._c(div, 'div.-children');
     this.children.forEach(function(c) { c.toHtml(cn); });
   }
 
@@ -233,10 +233,10 @@ Jaabro.Tree.toHtml = function(parentElement) {
 
 Jaabro.str = function(name, input, str) {
 
-  var r = this.makeTree(
+  let r = this.makeTree(
     name, input, (typeof str) === 'string' ? 'str' : 'rex', Jaabro.str.caller);
 
-  var l = input.match(str, name);
+  let l = input.match(str, name);
   if (l > -1) {
     r.result = 1;
     r.length = l;
@@ -249,22 +249,22 @@ Jaabro.rex = Jaabro.str;
 
 Jaabro.alt = function(name, input, parsers_) {
 
-  var ps = [];
-  for (var i = 2, l = arguments.length; i < l; i++) ps.push(arguments[i]);
+  let ps = [];
+  for (let i = 2, l = arguments.length; i < l; i++) ps.push(arguments[i]);
 
   // greedy ?
-  var l = ps[ps.length - 1];
-  var g = false; if (l === true || l === false) { ps.pop(); g = l; }
+  let l = ps[ps.length - 1];
+  let g = false; if (l === true || l === false) { ps.pop(); g = l; }
 
-  var o = input.offset;
-  var r = this.makeTree(name, input, g ? 'altg' : 'alt', Jaabro.alt.caller);
-  var cr = null;
+  let o = input.offset;
+  let r = this.makeTree(name, input, g ? 'altg' : 'alt', Jaabro.alt.caller);
+  let cr = null;
 
   while (true) {
 
-    var p = ps.shift(); if ( ! p) break;
+    let p = ps.shift(); if ( ! p) break;
 
-    var rr = p(input);
+    let rr = p(input);
     r.children.push(rr);
 
     input.offset = o;
@@ -297,8 +297,8 @@ Jaabro.alt = function(name, input, parsers_) {
 
 Jaabro.altg = function(name, input, parsers_) {
 
-  var as = [];
-  for (var i = 0, l = arguments.length; i < l; i++) as.push(arguments[i]);
+  let as = [];
+  for (let i = 0, l = arguments.length; i < l; i++) as.push(arguments[i]);
   as.push(true);
 
   return this.alt.apply(this, as);
@@ -325,25 +325,25 @@ Jaabro.toQuantifier = function(parser) {
 
 Jaabro.quantify = function(parser) {
 
-  var q = this.toQuantifier(parser);
+  let q = this.toQuantifier(parser);
   return q ? q() : false;
 };
 
 Jaabro.seq = function(name, input, parsers_) {
 
-  var o = input.offset;
-  var r = this.makeTree(name, input, 'seq', Jaabro.seq.caller);
-  var cr = null;
+  let o = input.offset;
+  let r = this.makeTree(name, input, 'seq', Jaabro.seq.caller);
+  let cr = null;
 
-  var ps = []; for (var i = 2, l = arguments.length; i < l; i++) {
+  let ps = []; for (let i = 2, l = arguments.length; i < l; i++) {
     ps.push(arguments[i]);
   }
 
   while (true) {
 
-    var p = ps.shift(); if ( ! p) break;
+    let p = ps.shift(); if ( ! p) break;
 
-    var q = this.toQuantifier(p);
+    let q = this.toQuantifier(p);
     if (q) throw new Error("lonely quantifier '" + q.quantifier_name + "'");
 
     q = this.quantify(ps[0]);
@@ -382,12 +382,12 @@ Jaabro.rep = function(name, input, parser, min, max) {
   if (min === null || min === undefined || min < 0) min = 0;
   if (max === null || max === undefined || max < 0) max = 0;
 
-  var o = input.offset;
-  var r = this.makeTree(name, input, 'rep', Jaabro.rep.caller);
-  var count = 0;
+  let o = input.offset;
+  let r = this.makeTree(name, input, 'rep', Jaabro.rep.caller);
+  let count = 0;
 
   while (true) {
-    var cr = parser(input);
+    let cr = parser(input);
     r.children.push(cr);
     if (cr.result !== 1) break;
     count = count + 1;
@@ -410,7 +410,7 @@ Jaabro.rep = function(name, input, parser, min, max) {
 
 Jaabro.ren = function(name, input, parser) {
 
-  var cr = parser(input);
+  let cr = parser(input);
   cr.name = name;
 
   return cr;
@@ -418,11 +418,11 @@ Jaabro.ren = function(name, input, parser) {
 
 Jaabro.nott = function(name, input, parser) {
 
-  var o = input.offset;
+  let o = input.offset;
 
-  var r = this.makeTree(name, input, 'nott', Jaabro.nott.caller);
+  let r = this.makeTree(name, input, 'nott', Jaabro.nott.caller);
 
-  var cr = parser(input);
+  let cr = parser(input);
   r.children.push(cr);
 
   r.length = 0;
@@ -435,11 +435,11 @@ Jaabro.nott = function(name, input, parser) {
 
 Jaabro.all = function(name, input, parser) {
 
-  var o = input.offset;
-  var l = input.string.length - o;
-  var r = this.makeTree(name, input, 'all', Jaabro.all.caller);
+  let o = input.offset;
+  let l = input.string.length - o;
+  let r = this.makeTree(name, input, 'all', Jaabro.all.caller);
 
-  var cr = parser(input);
+  let cr = parser(input);
   r.children.push(cr);
 
   if (cr.length < l) { input.offset = o; }
@@ -450,17 +450,17 @@ Jaabro.all = function(name, input, parser) {
 
 Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 
-  var j = false; // jseq?
+  let j = false; // jseq?
 
   if (sepp === undefined && endp === undefined) {
     j = true;
     sepp = eltp; eltp = startp; startp = null;
   }
 
-  var o = input.offset;
-  var r = this.makeTree(name, input, j ? 'jseq' : 'eseq', Jaabro.eseq.caller);
+  let o = input.offset;
+  let r = this.makeTree(name, input, j ? 'jseq' : 'eseq', Jaabro.eseq.caller);
   r.result = 1;
-  var cr = null;
+  let cr = null;
 
   if (startp) {
     cr = startp(input);
@@ -470,9 +470,9 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 
   if (r.result === 1) {
 
-    var i = 1;
-    var count = 0;
-    var emptyStack = 0;
+    let i = 1;
+    let count = 0;
+    let emptyStack = 0;
 
     while (true) {
 
@@ -489,7 +489,7 @@ Jaabro.eseq = function(name, input, startp, eltp, sepp, endp) {
 
       if (cr.result !== 1) {
         if (i === 0 && count > 0) {
-          var lsep = r.children[r.children.length - 2];
+          let lsep = r.children[r.children.length - 2];
           lsep.result = 0;
           input.offset = lsep.offset;
         }
@@ -524,20 +524,20 @@ Jaabro.make = function(fun) {
   //};
     // no, we need the local eval...
 
-  var rw_ = function(t) {
-    for (var i = 0, l = t.children.length; i < l; i++) {
-      var c = t.children[i];
+  let rw_ = function(t) {
+    for (let i = 0, l = t.children.length; i < l; i++) {
+      let c = t.children[i];
       if (c.length > 0 || c.name) return rewrite(c);
     }
     return null;
   };
-  var rw = function(t) {
+  let rw = function(t) {
     return eval('rewrite_' + (t.name ? t.name : ''))(t);
   };
 
-  var p = Object.create(Jaabro);
+  let p = Object.create(Jaabro);
 
-  var funs = fun.toString();
+  let funs = fun.toString();
   'all alt altg eseq jseq ren rep rex seq str nott'
     .split(' ')
     .forEach(function(f) {
@@ -558,10 +558,9 @@ Jaabro.make = function(fun) {
 
   fun = eval('(' + funs + ')');
 
-  //var rw = fun.call(p, p);
-  var rw = fun(p); // pass the parser, could be useful
-  p.root = rw[0];
-  p.rewrite = rw[1];
+  let rr = fun(p); // pass the parser, could be useful
+  p.root = rr[0];
+  p.rewrite = rr[1];
 
   return p;
 };
@@ -569,7 +568,7 @@ Jaabro.makeParser = Jaabro.make;
 
 Jaabro.makeInput = function(string, opts) {
 
-  var i = Object.create(Jaabro.Input);
+  let i = Object.create(Jaabro.Input);
   i.string = string;
   i.offset = 0;
   i.options = opts || {};
@@ -579,7 +578,7 @@ Jaabro.makeInput = function(string, opts) {
 
 Jaabro.makeTree = function(name, input, parter, parser) {
 
-  var r = Object.create(Jaabro.Tree);
+  let r = Object.create(Jaabro.Tree);
   r.name = name;
   r.result = 0;
   r.input = input;
@@ -603,7 +602,7 @@ Jaabro.parse = function(string, opts) {
 
   if ( ! opts.hasOwnProperty('prune')) opts.prune = true;
 
-  var t = null;
+  let t = null;
   if (opts.all === false) t = this.root(this.makeInput(string, opts));
   else t = Jaabro.all(null, this.makeInput(string, opts), this.root);
 
