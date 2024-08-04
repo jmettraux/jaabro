@@ -25,7 +25,7 @@ pkg_mini:
 	mkdir -p pkg
 	printf "/* $(NAME)-$(VERSION).min.js | MIT license: $(LICENSE) */" > pkg/$(NAME)-$(VERSION).min.js
 	#cat src/$(NAME).js | jsmin >> pkg/$(NAME)-$(VERSION).min.js
-	java -jar tools/closure-compiler.jar --js src/$(NAME).js >> pkg/$(NAME)-$(VERSION).min.js
+	java -jar tools/closure-compiler.jar --language_in=ECMASCRIPT6 --js src/$(NAME).js >> pkg/$(NAME)-$(VERSION).min.js
 	echo "/* minified from commit $(SHA) on $(NOW) */" >> pkg/$(NAME)-$(VERSION).min.js
 	cp pkg/$(NAME)-$(VERSION).min.js pkg/$(NAME)-$(VERSION)-$(SHA).min.js
 
